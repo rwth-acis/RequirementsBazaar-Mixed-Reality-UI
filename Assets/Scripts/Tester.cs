@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Tester : MonoBehaviour
 {
+    public RequirementsBazaarCreateEditRequirementForm form;
 
     // Use this for initialization
     async void Update()
@@ -11,12 +12,7 @@ public class Tester : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("Fetching");
-            Activity[] activities = await ActivityTracker.GetActivities();
-
-            foreach(Activity act in activities)
-            {
-                Debug.Log(act.additionalObject.project.name);
-            }
+            form.RequirementId = 1831;
         }
     }
 }

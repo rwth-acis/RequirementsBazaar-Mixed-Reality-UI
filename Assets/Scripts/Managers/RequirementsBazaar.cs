@@ -10,45 +10,19 @@ public static class RequirementsBazaar
 {
     private const string baseUrl = "https://requirements-bazaar.org/bazaar/";
 
-    private static int projectsPerPage = 4;
-    private static int categoriesPerPage = 4;
-
-    public static int ProjectsPerPage
-    {
-        get
-        {
-            return projectsPerPage;
-        }
-        set
-        {
-            projectsPerPage = value;
-        }
-    }
-
-    public static int CategoriesPerPage
-    {
-        get
-        {
-            return categoriesPerPage;
-        }
-        set
-        {
-            categoriesPerPage = value;
-        }
-    }
-
     #region projects
 
     /// <summary>
     /// Retrieves all projecs on the given page.
     /// </summary>
     /// <param name="page">The page nubmer of the project list</param>
+    /// <param name="per_page">The number of projects on one page</param>
     /// <param name="mode">Decides how the project list should be sorted</param>
     /// <returns>An array of projects which are listed on the requested page number</returns>
-    public static async Task<Project[]> GetProjects(int page, ProjectSortingMode mode = ProjectSortingMode.DEFAULT)
+    public static async Task<Project[]> GetProjects(int page, int per_page = 10, ProjectSortingMode mode = ProjectSortingMode.DEFAULT)
     {
         string url = baseUrl + "projects?page=" + page.ToString()
-            + "&per_page=" + projectsPerPage.ToString();
+            + "&per_page=" + per_page.ToString();
         if (mode != ProjectSortingMode.DEFAULT)
         {
             url += "&sort=" + mode.ToString().ToLower();
@@ -94,15 +68,16 @@ public static class RequirementsBazaar
     /// </summary>
     /// <param name="projectId">The id of the project which contains the categories</param>
     /// <param name="page">The page number of the requirements list</param>
+    /// <param name="per_page">The number of categories on one page</param>
     /// <param name="searchFilter">A search query string</param>
     /// <param name="sortingMode">How the requirements should be sorteds</param>
     /// <returns></returns>
     public static async Task<Category[]> GetProjectCategories
-        (int projectId, int page = 0, string searchFilter = "",
+        (int projectId, int page = 0, int per_page = 10, string searchFilter = "",
         ProjectSortingMode sortingMode = ProjectSortingMode.DEFAULT)
     {
-        string url = baseUrl + "projects?page=" + page.ToString()
-            + "&per_page=" + categoriesPerPage.ToString();
+        string url = baseUrl + "projects/" + projectId.ToString() + "/categories?page=" + page.ToString()
+            + "&per_page=" + per_page.ToString();
         if (sortingMode != ProjectSortingMode.DEFAULT)
         {
             url += "&sort=" + sortingMode.ToString().ToLower();
