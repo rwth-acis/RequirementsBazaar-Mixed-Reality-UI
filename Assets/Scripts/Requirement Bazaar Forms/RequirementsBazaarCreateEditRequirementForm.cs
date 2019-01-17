@@ -105,7 +105,7 @@ public class RequirementsBazaarCreateEditRequirementForm : MonoBehaviour
 [CanEditMultipleObjects]
 public class CreateEditRequirementFormEditor : Editor
 {
-    bool existingRequirement = false;
+    int selectedMode = 0; // 0: new requirement, 1: existing requirement
 
     SerializedProperty projectId;
     SerializedProperty requirementIdProperty;
@@ -128,19 +128,29 @@ public class CreateEditRequirementFormEditor : Editor
         attachmentImage = serializedObject.FindProperty("attachmentImage");
 
         requirementId = requirementIdProperty.intValue;
+
+        if (requirementIdProperty.intValue != -1)
+        {
+            selectedMode = 1; // select existing mode
+        }
+        else
+        {
+            selectedMode = 0; // select new mode
+        }
     }
 
     public override void OnInspectorGUI()
-    {
-        if (requirementId != -1)
-        {
-            existingRequirement = (requirementIdProperty.intValue != -1);
-        }
+    {        
+        selectedMode = GUILayout.SelectionGrid(selectedMode, new string[] { "Create New Requirement", "Edit Existing Requirement" }, 2);
 
-        EditorGUILayout.PropertyField(projectId);
-        existingRequirement = EditorGUILayout.BeginToggleGroup("Edit Existing Requirement", existingRequirement);
-        requirementId = EditorGUILayout.IntField("Requirement ID", requirementId);
-        EditorGUILayout.EndToggleGroup();
+        if (selectedMode == 0)
+        {
+            EditorGUILayout.PropertyField(projectId);
+        }
+        else
+        {
+            requirementId = EditorGUILayout.IntField("Requirement ID", requirementId);
+        }
 
         EditorGUILayout.Separator();
 
@@ -151,13 +161,13 @@ public class CreateEditRequirementFormEditor : Editor
         EditorGUILayout.PropertyField(attachmentImage);
 
 
-        if (existingRequirement)
+        if (selectedMode == 0)
         {
-            requirementIdProperty.intValue = requirementId;
+            requirementIdProperty.intValue = -1;
         }
         else
         {
-            requirementIdProperty.intValue = -1;
+            requirementIdProperty.intValue = requirementId;
         }
 
         serializedObject.ApplyModifiedProperties();
