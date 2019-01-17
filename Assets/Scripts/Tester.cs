@@ -12,7 +12,7 @@ public class Tester : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("Fetching");
-            form.RequirementId = 1831;
+            form.SetUpEditMode(1931);
         }
     }
 }
