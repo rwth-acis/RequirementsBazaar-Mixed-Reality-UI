@@ -3,14 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class Comment
+namespace Org.Requirements_Bazaar.DataModel
 {
-    public int id;
-    public string message;
-    public int replyToComment;
-    public int requirementId;
-    public User creator;
-    public string creationDate;
-    public string lastUpdatedDate;
+
+    [Serializable]
+    public class Comment
+    {
+        public int id;
+        public string message;
+        public int replyToComment;
+        public int requirementId;
+        public User creator;
+        public string creationDate;
+        public string lastUpdatedDate;
+    }
+
 }

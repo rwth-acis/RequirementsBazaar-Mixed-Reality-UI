@@ -3,17 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tester : MonoBehaviour
+namespace Org.Requirements_Bazaar.Common
 {
-    public RequirementsBazaarCreateEditRequirementForm form;
 
-    // Use this for initialization
-    async void Update()
+    public class Tester : MonoBehaviour
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        public RequirementsBazaarCreateEditRequirementForm form;
+
+        // Use this for initialization
+        async void Update()
         {
-            Debug.Log("Fetching");
-            form.SetUpEditMode(1931);
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Debug.Log("Fetching");
+                form.SetUpEditMode(1931);
+            }
         }
     }
+
 }

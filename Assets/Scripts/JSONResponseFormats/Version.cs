@@ -3,8 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class APIVersion
+namespace Org.Requirements_Bazaar.DataModel
 {
-    public string version;
+
+    [Serializable]
+    public class APIVersion
+    {
+        public string version;
+    }
+
 }

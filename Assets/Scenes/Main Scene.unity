@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -711,6 +711,12 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ecc58275803cc3548b6e4737efe62cff, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &722244221 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114427609921712734, guid: 862705ffe68d06248b3ade90f58198c7,
+    type: 2}
+  m_PrefabInternal: {fileID: 922311285}
+  m_Script: {fileID: 11500000, guid: 4ed14a88c2ac7314fb2b4f6c7880addd, type: 3}
 --- !u!1 &742691174
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,6 +884,26 @@ Prefab:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 271115860}
+    - target: {fileID: 114278124398712852, guid: 862705ffe68d06248b3ade90f58198c7,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 722244221}
+    - target: {fileID: 114278124398712852, guid: 862705ffe68d06248b3ade90f58198c7,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnDownButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 114948791245147408, guid: 862705ffe68d06248b3ade90f58198c7,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 722244221}
+    - target: {fileID: 114948791245147408, guid: 862705ffe68d06248b3ade90f58198c7,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnUpButtonPressed
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 862705ffe68d06248b3ade90f58198c7, type: 2}
   m_IsPrefabParent: 0

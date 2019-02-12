@@ -1,28 +1,34 @@
-﻿using System.Collections;
+﻿using Org.Requirements_Bazaar.DataModel;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CategoryDisplayElement : MonoBehaviour
+namespace Org.Requirements_Bazaar.AR_VR_Forms
 {
-    [SerializeField] private Text titleLabel;
-    [SerializeField] private Text descriptionLabel;
 
-    private Category category;
-
-    public Category Category
+    public class CategoryDisplayElement : MonoBehaviour
     {
-        get { return category; }
-        set
+        [SerializeField] private Text titleLabel;
+        [SerializeField] private Text descriptionLabel;
+
+        private Category category;
+
+        public Category Category
         {
-            category = value;
-            UpdateDisplay();
+            get { return category; }
+            set
+            {
+                category = value;
+                UpdateDisplay();
+            }
+        }
+
+        private void UpdateDisplay()
+        {
+            titleLabel.text = category.name;
+            descriptionLabel.text = category.description;
         }
     }
 
-    private void UpdateDisplay()
-    {
-        titleLabel.text = category.name;
-        descriptionLabel.text = category.description;
-    }
 }

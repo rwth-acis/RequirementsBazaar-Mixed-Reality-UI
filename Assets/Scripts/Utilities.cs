@@ -2,16 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class Utilities
+namespace Org.Requirements_Bazaar.Common
 {
-    public static Transform GetHighestParent(Transform start)
-    {
-        Transform current = start;
-        while (current.parent != null)
-        {
-            current = current.parent;
-        }
 
-        return current;
+    public static class Utilities
+    {
+        public static Transform GetHighestParent(Transform start)
+        {
+            Transform current = start;
+            while (current.parent != null)
+            {
+                current = current.parent;
+            }
+
+            return current;
+        }
     }
+
 }
