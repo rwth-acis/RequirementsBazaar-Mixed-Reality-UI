@@ -51,7 +51,7 @@ public class RequirementsBazaarRequirementsInCategoryForm : MonoBehaviour
         ClearRequirementDisplayElements();
 
         // get the current page and the next page
-        // the next page is required to check if 
+        // the next page is required to check if we are on the last page and to enable/disable downButton accordingly
         currentPage = await RequirementsBazaar.GetCategoryRequirements(categoryId, page, requirementsPerPage);
         nextPage = await RequirementsBazaar.GetCategoryRequirements(categoryId, page + 1, requirementsPerPage);
 
@@ -81,11 +81,11 @@ public class RequirementsBazaarRequirementsInCategoryForm : MonoBehaviour
 
     private void CreateRequirementsDisplayElement(Requirement requirement)
     {
-        RectTransform projectTileTransform = Instantiate(requirementDisplayElementTemplate, requirementDisplayElementTemplate.parent);
-        projectTileTransform.name = "Requirement (ID " + requirement.id + ")";
-        projectTileTransform.gameObject.SetActive(true);
-        RequirementDisplayElement projectTile = projectTileTransform.GetComponent<RequirementDisplayElement>();
-        projectTile.Requirement = requirement;
+        RectTransform requirementDisplayTransform = Instantiate(requirementDisplayElementTemplate, requirementDisplayElementTemplate.parent);
+        requirementDisplayTransform.name = "Requirement (ID " + requirement.id + ")";
+        requirementDisplayTransform.gameObject.SetActive(true);
+        RequirementDisplayElement requirementDisplayElement = requirementDisplayTransform.GetComponent<RequirementDisplayElement>();
+        requirementDisplayElement.Requirement = requirement;
     }
 
     private void ClearRequirementDisplayElements()

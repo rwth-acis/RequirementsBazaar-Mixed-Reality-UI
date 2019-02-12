@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 public class RequirementsBazaarProjectsForm : MonoBehaviour
 {
-    public int projectsPerPage = 4;
     [SerializeField] private RectTransform projectTileTemplate;
     [SerializeField] private Button upButton;
     [SerializeField] private Button downButton;
 
     private int page = 0;
+    private const int projectsPerPage = 4;
     private Project[] currentPage, nextPage;
 
     private void Start()
