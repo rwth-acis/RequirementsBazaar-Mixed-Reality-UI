@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RequirementsBazaarCategoriesForm : MonoBehaviour
+public class RequirementsBazaarCategoriesForm : RequirementsBazaarForm
 {
     [SerializeField] private int projectId;
     [SerializeField] private RectTransform categoryDisplayTemplate;

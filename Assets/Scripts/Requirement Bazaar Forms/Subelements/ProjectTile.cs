@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,7 +40,13 @@ public class ProjectTile : MonoBehaviour
         categoriesPage.transform.position = canvas.position;
         RequirementsBazaarCategoriesForm categoriesForm = categoriesPage.GetComponent<RequirementsBazaarCategoriesForm>();
         categoriesForm.ProjectId = Project.id;
+        categoriesForm.PageClosed += OnInstantiatedPageClosed;
 
         canvas.gameObject.SetActive(false);
+    }
+
+    private void OnInstantiatedPageClosed(object sender, EventArgs e)
+    {
+        canvas.gameObject.SetActive(true);
     }
 }

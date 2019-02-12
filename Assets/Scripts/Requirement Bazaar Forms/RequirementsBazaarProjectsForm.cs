@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RequirementsBazaarProjectsForm : MonoBehaviour
+public class RequirementsBazaarProjectsForm : RequirementsBazaarForm
 {
     [SerializeField] private RectTransform projectTileTemplate;
     [SerializeField] private Button upButton;
