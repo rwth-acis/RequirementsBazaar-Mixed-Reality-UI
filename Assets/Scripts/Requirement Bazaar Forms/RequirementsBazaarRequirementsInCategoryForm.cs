@@ -18,6 +18,7 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
 
         private int page = 0;
         private Requirement[] currentPage, nextPage;
+        private bool instantiatedByCode = false;
 
         public int CategoryId
         {
@@ -25,13 +26,17 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
             set
             {
                 categoryId = value;
+                instantiatedByCode = true;
                 UpdateDisplay();
             }
         }
 
         private void Start()
         {
-            UpdateDisplay();
+            if (!instantiatedByCode)
+            {
+                UpdateDisplay();
+            }
         }
 
         public void OnUpButtonPressed()
