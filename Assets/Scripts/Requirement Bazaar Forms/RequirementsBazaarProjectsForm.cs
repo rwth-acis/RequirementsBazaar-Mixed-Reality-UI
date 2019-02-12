@@ -3,88 +3,93 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RequirementsBazaarProjectsForm : RequirementsBazaarForm
+namespace Org.Requirements_Bazaar.AR_VR_Forms
 {
-    [SerializeField] private RectTransform projectTileTemplate;
-    [SerializeField] private Button upButton;
-    [SerializeField] private Button downButton;
 
-    private int page = 0;
-    private const int projectsPerPage = 4;
-    private Project[] currentPage, nextPage;
-
-    private void Start()
+    public class RequirementsBazaarProjectsForm : RequirementsBazaarForm
     {
-        UpdateDisplay();
-    }
+        [SerializeField] private RectTransform projectTileTemplate;
+        [SerializeField] private Button upButton;
+        [SerializeField] private Button downButton;
 
-    public void OnUpButtonPressed()
-    {
-        page--;
-        UpdateDisplay();
-    }
+        private int page = 0;
+        private const int projectsPerPage = 4;
+        private Project[] currentPage, nextPage;
 
-    public void OnDownButtonPressed()
-    {
-        if (nextPage != null && nextPage.Length > 0)
+        private void Start()
         {
-            page++;
             UpdateDisplay();
         }
-    }
 
-    private async void UpdateDisplay()
-    {
-        upButton.enabled = false;
-        downButton.enabled = false;
-        ClearProjectTiles();
+        public void OnUpButtonPressed()
+        {
+            page--;
+            UpdateDisplay();
+        }
 
-        // get the current page and the next page
-        // the next page is required to check if 
-        currentPage = await RequirementsBazaar.GetProjects(page, projectsPerPage);
-        nextPage = await RequirementsBazaar.GetProjects(page + 1, projectsPerPage);
+        public void OnDownButtonPressed()
+        {
+            if (nextPage != null && nextPage.Length > 0)
+            {
+                page++;
+                UpdateDisplay();
+            }
+        }
 
-        if (page == 0)
+        private async void UpdateDisplay()
         {
             upButton.enabled = false;
-        }
-        else
-        {
-            upButton.enabled = true;
-        }
-
-        if (nextPage.Length == 0)
-        {
             downButton.enabled = false;
-        }
-        else
-        {
-            downButton.enabled = true;
-        }
+            ClearProjectTiles();
 
-        for (int i= 0; i<currentPage.Length; i++)
-        {
-            CreateProjectTile(currentPage[i]);
-        }
-    }
+            // get the current page and the next page
+            // the next page is required to check if 
+            currentPage = await RequirementsBazaar.GetProjects(page, projectsPerPage);
+            nextPage = await RequirementsBazaar.GetProjects(page + 1, projectsPerPage);
 
-    private void CreateProjectTile(Project project)
-    {
-        RectTransform projectTileTransform = Instantiate(projectTileTemplate, projectTileTemplate.parent);
-        projectTileTransform.name = "Project Tile (Project ID " + project + ")";
-        projectTileTransform.gameObject.SetActive(true);
-        ProjectTile projectTile = projectTileTransform.GetComponent<ProjectTile>();
-        projectTile.Project = project;
-    }
-
-    private void ClearProjectTiles()
-    {
-        foreach(RectTransform child in projectTileTemplate.parent)
-        {
-            if (child != projectTileTemplate)
+            if (page == 0)
             {
-                Destroy(child.gameObject);
+                upButton.enabled = false;
+            }
+            else
+            {
+                upButton.enabled = true;
+            }
+
+            if (nextPage.Length == 0)
+            {
+                downButton.enabled = false;
+            }
+            else
+            {
+                downButton.enabled = true;
+            }
+
+            for (int i = 0; i < currentPage.Length; i++)
+            {
+                CreateProjectTile(currentPage[i]);
+            }
+        }
+
+        private void CreateProjectTile(Project project)
+        {
+            RectTransform projectTileTransform = Instantiate(projectTileTemplate, projectTileTemplate.parent);
+            projectTileTransform.name = "Project Tile (Project ID " + project + ")";
+            projectTileTransform.gameObject.SetActive(true);
+            ProjectTile projectTile = projectTileTransform.GetComponent<ProjectTile>();
+            projectTile.Project = project;
+        }
+
+        private void ClearProjectTiles()
+        {
+            foreach (RectTransform child in projectTileTemplate.parent)
+            {
+                if (child != projectTileTemplate)
+                {
+                    Destroy(child.gameObject);
+                }
             }
         }
     }
+
 }

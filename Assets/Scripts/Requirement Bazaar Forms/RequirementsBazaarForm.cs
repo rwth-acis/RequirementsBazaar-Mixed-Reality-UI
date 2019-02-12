@@ -3,17 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RequirementsBazaarForm : MonoBehaviour
+namespace Org.Requirements_Bazaar.AR_VR_Forms
 {
-    public virtual void Close()
+
+    public class RequirementsBazaarForm : MonoBehaviour
     {
-        Destroy(gameObject);
+        public virtual void Close()
+        {
+            Destroy(gameObject);
+        }
+
+        private void OnDestroy()
+        {
+            PageClosed?.Invoke(this, EventArgs.Empty);
+        }
+
+        public event EventHandler PageClosed;
     }
 
-    private void OnDestroy()
-    {
-        PageClosed?.Invoke(this, EventArgs.Empty);
-    }
-
-    public event EventHandler PageClosed;
 }

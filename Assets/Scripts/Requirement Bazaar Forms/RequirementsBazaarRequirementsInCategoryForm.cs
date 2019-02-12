@@ -3,98 +3,102 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RequirementsBazaarRequirementsInCategoryForm : MonoBehaviour
+namespace Org.Requirements_Bazaar.AR_VR_Forms
 {
-    [SerializeField] private int categoryId;
-    public int requirementsPerPage = 4;
-    [SerializeField] private RectTransform requirementDisplayElementTemplate;
-    [SerializeField] private Button upButton;
-    [SerializeField] private Button downButton;
 
-    private int page = 0;
-    private Requirement[] currentPage, nextPage;
-
-    public int CategoryId
+    public class RequirementsBazaarRequirementsInCategoryForm : RequirementsBazaarForm
     {
-        get { return categoryId; }
-        set
+        [SerializeField] private int categoryId;
+        public int requirementsPerPage = 4;
+        [SerializeField] private RectTransform requirementDisplayElementTemplate;
+        [SerializeField] private Button upButton;
+        [SerializeField] private Button downButton;
+
+        private int page = 0;
+        private Requirement[] currentPage, nextPage;
+
+        public int CategoryId
         {
-            categoryId = value;
+            get { return categoryId; }
+            set
+            {
+                categoryId = value;
+                UpdateDisplay();
+            }
+        }
+
+        private void Start()
+        {
             UpdateDisplay();
         }
-    }
 
-    private void Start()
-    {
-        UpdateDisplay();
-    }
-
-    public void OnUpButtonPressed()
-    {
-        page--;
-        UpdateDisplay();
-    }
-
-    public void OnDownButtonPressed()
-    {
-        if (nextPage != null && nextPage.Length > 0)
+        public void OnUpButtonPressed()
         {
-            page++;
+            page--;
             UpdateDisplay();
         }
-    }
 
-    private async void UpdateDisplay()
-    {
-        upButton.enabled = false;
-        downButton.enabled = false;
-        ClearRequirementDisplayElements();
+        public void OnDownButtonPressed()
+        {
+            if (nextPage != null && nextPage.Length > 0)
+            {
+                page++;
+                UpdateDisplay();
+            }
+        }
 
-        // get the current page and the next page
-        // the next page is required to check if we are on the last page and to enable/disable downButton accordingly
-        currentPage = await RequirementsBazaar.GetCategoryRequirements(categoryId, page, requirementsPerPage);
-        nextPage = await RequirementsBazaar.GetCategoryRequirements(categoryId, page + 1, requirementsPerPage);
-
-        if (page == 0)
+        private async void UpdateDisplay()
         {
             upButton.enabled = false;
-        }
-        else
-        {
-            upButton.enabled = true;
-        }
-
-        if (nextPage.Length == 0)
-        {
             downButton.enabled = false;
-        }
-        else
-        {
-            downButton.enabled = true;
-        }
+            ClearRequirementDisplayElements();
 
-        for (int i = 0; i < currentPage.Length; i++)
-        {
-            CreateRequirementsDisplayElement(currentPage[i]);
-        }
-    }
+            // get the current page and the next page
+            // the next page is required to check if we are on the last page and to enable/disable downButton accordingly
+            currentPage = await RequirementsBazaar.GetCategoryRequirements(categoryId, page, requirementsPerPage);
+            nextPage = await RequirementsBazaar.GetCategoryRequirements(categoryId, page + 1, requirementsPerPage);
 
-    private void CreateRequirementsDisplayElement(Requirement requirement)
-    {
-        RectTransform requirementDisplayTransform = Instantiate(requirementDisplayElementTemplate, requirementDisplayElementTemplate.parent);
-        requirementDisplayTransform.name = "Requirement (ID " + requirement.id + ")";
-        requirementDisplayTransform.gameObject.SetActive(true);
-        RequirementDisplayElement requirementDisplayElement = requirementDisplayTransform.GetComponent<RequirementDisplayElement>();
-        requirementDisplayElement.Requirement = requirement;
-    }
-
-    private void ClearRequirementDisplayElements()
-    {
-        foreach (RectTransform child in requirementDisplayElementTemplate.parent)
-        {
-            if (child != requirementDisplayElementTemplate)
+            if (page == 0)
             {
-                Destroy(child.gameObject);
+                upButton.enabled = false;
+            }
+            else
+            {
+                upButton.enabled = true;
+            }
+
+            if (nextPage.Length == 0)
+            {
+                downButton.enabled = false;
+            }
+            else
+            {
+                downButton.enabled = true;
+            }
+
+            for (int i = 0; i < currentPage.Length; i++)
+            {
+                CreateRequirementsDisplayElement(currentPage[i]);
+            }
+        }
+
+        private void CreateRequirementsDisplayElement(Requirement requirement)
+        {
+            RectTransform requirementDisplayTransform = Instantiate(requirementDisplayElementTemplate, requirementDisplayElementTemplate.parent);
+            requirementDisplayTransform.name = "Requirement (ID " + requirement.id + ")";
+            requirementDisplayTransform.gameObject.SetActive(true);
+            RequirementDisplayElement requirementDisplayElement = requirementDisplayTransform.GetComponent<RequirementDisplayElement>();
+            requirementDisplayElement.Requirement = requirement;
+        }
+
+        private void ClearRequirementDisplayElements()
+        {
+            foreach (RectTransform child in requirementDisplayElementTemplate.parent)
+            {
+                if (child != requirementDisplayElementTemplate)
+                {
+                    Destroy(child.gameObject);
+                }
             }
         }
     }

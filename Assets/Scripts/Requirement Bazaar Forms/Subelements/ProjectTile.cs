@@ -4,49 +4,54 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ProjectTile : MonoBehaviour
+namespace Org.Requirements_Bazaar.AR_VR_Forms
 {
-    [SerializeField] Text titleLabel;
-    [SerializeField] Text descriptionLabel;
-    private Project project;
 
-    private Transform canvas;
-
-    public Project Project
+    public class ProjectTile : MonoBehaviour
     {
-        get { return project; }
-        set
+        [SerializeField] Text titleLabel;
+        [SerializeField] Text descriptionLabel;
+        private Project project;
+
+        private Transform canvas;
+
+        public Project Project
         {
-            project = value;
-            UpdateDisplay();
+            get { return project; }
+            set
+            {
+                project = value;
+                UpdateDisplay();
+            }
+        }
+
+        private void Start()
+        {
+            canvas = Utilities.GetHighestParent(transform);
+        }
+
+        private void UpdateDisplay()
+        {
+            titleLabel.text = project.name;
+            descriptionLabel.text = project.description;
+        }
+
+        public void OnClick()
+        {
+            // instantiate the next subpage: the categories page
+            GameObject categoriesPage = Instantiate(RequirementsBazaarUI.Instance.CategoriesPage);
+            categoriesPage.transform.position = canvas.position;
+            RequirementsBazaarCategoriesForm categoriesForm = categoriesPage.GetComponent<RequirementsBazaarCategoriesForm>();
+            categoriesForm.ProjectId = Project.id;
+            categoriesForm.PageClosed += OnInstantiatedPageClosed;
+
+            canvas.gameObject.SetActive(false);
+        }
+
+        private void OnInstantiatedPageClosed(object sender, EventArgs e)
+        {
+            canvas.gameObject.SetActive(true);
         }
     }
 
-    private void Start()
-    {
-        canvas = Utilities.GetHighestParent(transform);
-    }
-
-    private void UpdateDisplay()
-    {
-        titleLabel.text = project.name;
-        descriptionLabel.text = project.description;
-    }
-
-    public void OnClick()
-    {
-        // instantiate the next subpage: the categories page
-        GameObject categoriesPage = Instantiate(RequirementsBazaarUI.Instance.CategoriesPage);
-        categoriesPage.transform.position = canvas.position;
-        RequirementsBazaarCategoriesForm categoriesForm = categoriesPage.GetComponent<RequirementsBazaarCategoriesForm>();
-        categoriesForm.ProjectId = Project.id;
-        categoriesForm.PageClosed += OnInstantiatedPageClosed;
-
-        canvas.gameObject.SetActive(false);
-    }
-
-    private void OnInstantiatedPageClosed(object sender, EventArgs e)
-    {
-        canvas.gameObject.SetActive(true);
-    }
 }
