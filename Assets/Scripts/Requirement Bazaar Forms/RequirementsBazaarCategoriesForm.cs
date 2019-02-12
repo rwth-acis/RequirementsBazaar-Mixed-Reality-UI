@@ -8,19 +8,31 @@ using UnityEngine.UI;
 
 namespace Org.Requirements_Bazaar.AR_VR_Forms
 {
-
+    /// <summary>
+    /// Controls the UI for displaying the categories of a project
+    /// </summary>
     public class RequirementsBazaarCategoriesForm : RequirementsBazaarForm
     {
+        [Tooltip("The ID of the project whose categories should be displayed")]
         [SerializeField] private int projectId;
+
+        [Tooltip("This template will be instantiated for each displayed category")]
         [SerializeField] private RectTransform categoryDisplayTemplate;
+
+        [Tooltip("The reference to the up button")]
         [SerializeField] private Button upButton;
+
+        [Tooltip("The reference to the down button")]
         [SerializeField] private Button downButton;
 
-        private int page = 0;
-        private const int categoriesPerPage = 4;
-        private Category[] currentPage, nextPage;
-        private bool instantiatedByCode = false;
+        private int page = 0; // current page
+        private const int categoriesPerPage = 4; // how many categories should be displayed per page? This value should be set according to the number of categories which can visually fit onto the form
+        private Category[] currentPage, nextPage; // arrays of the categories of the current and next page
+        private bool instantiatedByCode = false; // true if the form was created by code, false if it was placed in the scene by the developer
 
+        /// <summary>
+        /// The ID of the project whose categories should be displayed
+        /// </summary>
         public int ProjectId
         {
             get
