@@ -49,18 +49,28 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
 
         private void Start()
         {
+            // if the developer created the form in the scene and set it up manually => update the display to fetch the data according to the configuration
+            // if it was instantiated by code, this is handled at the moment where the ID configuration is set
             if (!instantiatedByCode)
             {
                 UpdateDisplay();
             }
         }
 
+        /// <summary>
+        /// Called when the up button is pressed
+        /// Goes one page up and updates the display accordingly
+        /// </summary>
         public void OnUpButtonPressed()
         {
             page--;
             UpdateDisplay();
         }
 
+        /// <summary>
+        /// Called when the down button is pressed
+        /// Goes one page down (if there is still something to display) and updates teh display accordingly
+        /// </summary>
         public void OnDownButtonPressed()
         {
             if (nextPage != null && nextPage.Length > 0)
@@ -72,8 +82,10 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
 
         private async void UpdateDisplay()
         {
+            // disable all interactive controls so that the user cannot invoke multiple asynchronous commands at once
             upButton.enabled = false;
             downButton.enabled = false;
+            // delete the currently shown category elements so that new category display can be shown instead
             ClearCategoryDisplayElements();
 
             // get the current page and the next page
