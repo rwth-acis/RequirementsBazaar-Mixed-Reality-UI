@@ -41,6 +41,6 @@ public class RequirementsBazaarUI : MonoBehaviour
 
     public GameObject CreateEditRequirementPage
     {
-        get { return CreateEditRequirementPage; }
+        get { return createEditRequirementPage; }
     }
 }

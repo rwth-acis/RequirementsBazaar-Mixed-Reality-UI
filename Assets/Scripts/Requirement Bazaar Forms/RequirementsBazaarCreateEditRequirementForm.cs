@@ -10,7 +10,7 @@ using UnityEngine.UI;
 namespace Org.Requirements_Bazaar.AR_VR_Forms
 {
 
-    public class RequirementsBazaarCreateEditRequirementForm : MonoBehaviour
+    public class RequirementsBazaarCreateEditRequirementForm : RequirementsBazaarForm
     {
         [SerializeField] private int projectId = 0;
         [SerializeField] private int requirementId = -1;
@@ -25,7 +25,28 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
 
         private Requirement requirement;
 
-        private void Awake()
+        private bool instantiatedByCode = false;
+
+        private void Start()
+        {
+            if (!instantiatedByCode)
+            {
+                CheckRequirementId();
+            }
+        }
+
+        public int RequirementId
+        {
+            get { return requirementId; }
+            set
+            {
+                requirementId = value;
+                instantiatedByCode = true;
+                CheckRequirementId();
+            }
+        }
+
+        private void CheckRequirementId()
         {
             if (IsInCreateMode)
             {
@@ -35,11 +56,6 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
             {
                 ShowExistingRequirement();
             }
-        }
-
-        public int RequirementId
-        {
-            get { return requirementId; }
         }
 
         public bool IsInCreateMode
