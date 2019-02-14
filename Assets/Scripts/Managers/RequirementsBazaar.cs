@@ -107,6 +107,11 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// Gets the contributors of a project
+        /// </summary>
+        /// <param name="projectId">The id of the project</param>
+        /// <returns>Contributors object which contains lists contributors divided by their different roles</returns>
         public static async Task<Contributors> GetProjectContributors(int projectId)
         {
             string url = baseUrl + "projects/" + projectId.ToString() + "/contributors";
@@ -124,6 +129,13 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// Gets the followers of a project
+        /// </summary>
+        /// <param name="projectId">The id of the project</param>
+        /// <param name="page">The page number of the list divided into pages</param>
+        /// <param name="per_page">The number of entries that one page should contain</param>
+        /// <returns>An arrow of the followers of a project</returns>
         public static async Task<User[]> GetProjectFollowers(int projectId, int page = 0, int per_page = 10)
         {
             string url = baseUrl + "projects/" + projectId.ToString()
