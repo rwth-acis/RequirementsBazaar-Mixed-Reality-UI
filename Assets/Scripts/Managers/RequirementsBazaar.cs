@@ -48,6 +48,20 @@ namespace Org.Requirements_Bazaar.API
         }
 
         /// <summary>
+        /// Creates a new project
+        /// </summary>
+        /// <param name="project">The project object which should be created on the Requirements Bazaar</param>
+        /// <returns>The created project</returns>
+        //public static async Task<Project> CreateProject(Project project)
+        //{
+        //    string url = baseUrl + "projects";
+        //    string json = JsonUtility.ToJson(project);
+        //    Response response = await Rest.PostAsync(url, json);
+        //    Debug.Log(response);
+        //    return null;
+        //}
+
+        /// <summary>
         /// Retrieves a particular project by its given id
         /// </summary>
         /// <param name="projectId">The id of the project</param>
