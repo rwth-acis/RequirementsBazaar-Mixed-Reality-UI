@@ -46,6 +46,11 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
             }
         }
 
+        public bool IsNewRequirement
+        {
+            get { return requirementId < 0; }
+        }
+
         private void CheckRequirementId()
         {
             if (IsInCreateMode)
@@ -119,6 +124,22 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
                 categoryDropdown.options.Add(new Dropdown.OptionData(availableCategories[i].name));
             }
             categoryDropdown.RefreshShownValue();
+        }
+
+        public void PostRequirement()
+        {
+            if (IsNewRequirement)
+            {
+                requirement = new Requirement();
+                requirement.name = titleInputField.text;
+                requirement.description = descriptionInputField.text;
+                requirement.projectId = projectId;
+                requirement.categories = new Category[] { availableCategories[categoryDropdown.value]};
+            }
+            else
+            {
+
+            }
         }
     }
 
