@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using HoloToolkit.Unity;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -6,7 +7,7 @@ using UnityEngine.Networking;
 namespace Org.Requirements_Bazaar.Managers
 {
 
-    public class AuthorizationManager : MonoBehaviour
+    public class AuthorizationManager : Singleton<AuthorizationManager>
     {
         [SerializeField]
         private string clientId = "c4ced10f-ce0f-4155-b6f7-a4c40ffa410c";

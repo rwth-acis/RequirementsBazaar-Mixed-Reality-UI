@@ -155,12 +155,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a611e772ef8ddf64d8106a9cbb70f31c, type: 2}
   m_IsPrefabParent: 0
---- !u!114 &173246761 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114674554476679238, guid: ecc58275803cc3548b6e4737efe62cff,
-    type: 2}
-  m_PrefabInternal: {fileID: 632595568}
-  m_Script: {fileID: 11500000, guid: 6ab4fb737e8731e42b264a8e13e65b6d, type: 3}
 --- !u!1001 &218413178
 Prefab:
   m_ObjectHideFlags: 0
@@ -1484,7 +1478,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clientId: c4ced10f-ce0f-4155-b6f7-a4c40ffa410c
-  debugToken: eyJhbGciOiJSUzI1NiJ9.eyJhdWQiOlsiYzc1ODhlZmMtZjgzMS00ZTMxLTkyOGUtMGY0NmE5MWZiMzExIl0sImlzcyI6Imh0dHBzOlwvXC9hcGkubGVhcm5pbmctbGF5ZXJzLmV1XC9vXC9vYXV0aDJcLyIsImV4cCI6MTU0Njg3MTIzOSwiaWF0IjoxNTQ2ODY3NjM5LCJqdGkiOiJjY2M3ODJhMC1jMTYxLTQxZTItOWJkYy1iM2VjNDA2ZTBhZDIifQ.MBSOLU1eTbsbtCBdXBm-dICgrn2hFtL0p6ljbCsfRnrykFRcBsicJt_N_XEYykNu7GIQkpHIr2WWCqK8RZyuUXBbySNHecX4jRe7Wr55DwdgdEK_mhGRwJG-ywu8CBjS5ZrPXD3zwuZbvhpX7aBcQIisWK2jrybIUfnEBieUj1k
+  debugToken: eyJhbGciOiJSUzI1NiJ9.eyJhdWQiOlsiYzc1ODhlZmMtZjgzMS00ZTMxLTkyOGUtMGY0NmE5MWZiMzExIl0sImlzcyI6Imh0dHBzOlwvXC9hcGkubGVhcm5pbmctbGF5ZXJzLmV1XC9vXC9vYXV0aDJcLyIsImV4cCI6MTU1MTM1NzEwMywiaWF0IjoxNTUxMzUzNTAzLCJqdGkiOiJiZTY5NzEyYi1mOWQ3LTQ5MzctOTYwNS1kZWFmYjM2ZjA4YjAifQ.HdSiz1KGRyEGU7C5ML7DMuoeeQFuGiHn4oeXp_h5S0T4e-n1XGmqIhiffa3pf-Iyajd6kbgYNjcehtFBebZAxD9y55-OGsZ95Me9r969XPmbBNGMc0CV0JnovsIwC_R_wcf88LfWe-5JWrg-haYNudlL9fidqs87MYq1m70hMqs
 --- !u!1 &2098316713
 GameObject:
   m_ObjectHideFlags: 0
@@ -1512,7 +1506,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f349e93c05c7a2c4180274bb3d964e36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  form: {fileID: 173246761}
 --- !u!4 &2098316715
 Transform:
   m_ObjectHideFlags: 0

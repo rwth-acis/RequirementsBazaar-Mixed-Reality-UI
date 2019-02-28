@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Org.Requirements_Bazaar.Managers;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +17,13 @@ namespace Org.Requirements_Bazaar.Common
             }
 
             return current;
+        }
+
+        public static Dictionary<string, string> GetStandardHeaders()
+        {
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("Authorization", "Bearer " + AuthorizationManager.Instance.AccessToken);
+            return headers;
         }
     }
 

@@ -1,5 +1,7 @@
 ﻿using Microsoft.MixedReality.Toolkit.Core.Utilities.WebRequestRest;
+using Org.Requirements_Bazaar.Common;
 using Org.Requirements_Bazaar.DataModel;
+using Org.Requirements_Bazaar.Managers;
 using Org.Requirements_Bazaar.Serialization;
 using System;
 using System.Collections;
@@ -47,6 +49,27 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        public static async Task<Project> CreateProject(Project toCreate)
+        {
+            string url = baseUrl + "projects/";
+
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            string json = JsonUtility.ToJson(toCreate);
+
+            Response respone = await Rest.PostAsync(url, json, headers);
+            if (!respone.Successful)
+            {
+                Debug.LogError(respone.ResponseBody);
+                return null;
+            }
+            else
+            {
+                Project resultProject = JsonUtility.FromJson<Project>(respone.ResponseBody);
+                return resultProject;
+            }
+        }
+
         /// <summary>
         /// Creates a new project
         /// </summary>
@@ -69,7 +92,31 @@ namespace Org.Requirements_Bazaar.API
         public static async Task<Project> GetProject(int projectId)
         {
             string url = baseUrl + "projects/" + projectId.ToString();
-            Response response = await Rest.GetAsync(url);
+
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Response response = await Rest.GetAsync(url, headers);
+            if (!response.Successful)
+            {
+                Debug.LogError(response.ResponseBody);
+                return null;
+            }
+            else
+            {
+                Project project = JsonUtility.FromJson<Project>(response.ResponseBody);
+                return project;
+            }
+        }
+
+        public static async Task<Project> UpdateProject(Project toUpdate)
+        {
+            string url = baseUrl + "projects/" + toUpdate.id;
+
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            string json = JsonUtility.ToJson(toUpdate);
+
+            Response response = await Rest.PutAsync(url, json, headers);
             if (!response.Successful)
             {
                 Debug.LogError(response.ResponseBody);
