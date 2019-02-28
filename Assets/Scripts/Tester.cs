@@ -16,7 +16,10 @@ namespace Org.Requirements_Bazaar.Common
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Debug.Log("Posting");
-                
+                Requirement res = await RequirementsBazaar.CreateRequirement(399, "Test Requirement 2", "posted from Unity code");
+                Debug.Log("name: " + res.name);
+                Debug.Log("Id: " + res.id);
+                Debug.Log("Proj Id: " + res.projectId);
             }
         }
     }

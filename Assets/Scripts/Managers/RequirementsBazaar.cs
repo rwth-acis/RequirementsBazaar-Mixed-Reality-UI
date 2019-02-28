@@ -313,6 +313,47 @@ namespace Org.Requirements_Bazaar.API
 
         #region Requirements
 
+        public static async Task<Requirement> CreateRequirement(int projectId, string name, string description, int[] categoryIds = null)
+        {
+            string url = baseUrl + "requirements/";
+
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Category[] cats = null;
+
+            // convert the supplied category ids to actual category data
+            if (categoryIds != null)
+            {
+                cats = new Category[categoryIds.Length];
+                for (int i=0; i<categoryIds.Length;i++)
+                {
+                    cats[i] = await GetCategory(categoryIds[i]);
+                }
+            }
+            else // if no category was supplied: look for the default category and put it in there
+            {
+                Project proj = await GetProject(projectId);
+                cats = new Category[1];
+                cats[0] = await GetCategory(proj.defaultCategoryId);
+            }
+
+            JsonCreateRequirement toCreate = new JsonCreateRequirement() { projectId = projectId, name = name, description = description, categories = cats };
+
+            string json = JsonUtility.ToJson(toCreate);
+
+            Response response = await Rest.PostAsync(url, json, headers);
+            if (!response.Successful)
+            {
+                Debug.LogError(response.ResponseCode + ": " + response.ResponseBody);
+                return null;
+            }
+            else
+            {
+                Requirement requirement = JsonUtility.FromJson<Requirement>(response.ResponseBody);
+                return requirement;
+            }
+        }
+
         public static async Task<Requirement> GetRequirement(int requirementId)
         {
             string url = baseUrl + "requirements/" + requirementId.ToString();
@@ -511,7 +552,9 @@ namespace Org.Requirements_Bazaar.API
         {
             string url = baseUrl + "categories/" + categoryId.ToString();
 
-            Response response = await Rest.GetAsync(url);
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Response response = await Rest.GetAsync(url, headers);
 
             if (!response.Successful)
             {
