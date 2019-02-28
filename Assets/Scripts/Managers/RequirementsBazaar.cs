@@ -358,7 +358,9 @@ namespace Org.Requirements_Bazaar.API
         {
             string url = baseUrl + "requirements/" + requirementId.ToString();
 
-            Response response = await Rest.GetAsync(url);
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Response response = await Rest.GetAsync(url, headers);
 
             if (!response.Successful)
             {
@@ -371,6 +373,32 @@ namespace Org.Requirements_Bazaar.API
                 return requirement;
             }
         }
+
+        ///// <summary>
+        ///// Updates the specified requirement
+        ///// Please first query for the requirement to change, then changing its parameters and then supply it to this function
+        ///// </summary>
+        ///// <param name="toUpdate">The requirement to update</param>
+        ///// <returns></returns>
+        //public static async Task<Requirement> UpdateRequirement(Requirement toUpdate)
+        //{
+        //    string url = baseUrl + "requirements/" + toUpdate.id;
+
+        //    Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+        //    string json = JsonUtility.ToJson(toUpdate);
+
+        //    Response response = await Rest.PutAsync(url, json, headers);
+        //    if (!response.Successful)
+        //    {
+        //        Debug.LogError(response.ResponseCode + ": " + response.ResponseBody);
+        //        return null;
+        //    }
+        //    else
+        //    {
+        //        Requirement requirement = JsonUtility.FromJson<Requirement>(response.ResponseBody);
+        //        return requirement;
+        //    }
+        //}
 
         public static async Task<Attachment[]> GetRequirementAttachments(int requirementId, int page = 0, int per_page = 10)
         {
@@ -459,6 +487,25 @@ namespace Org.Requirements_Bazaar.API
                 string json = JsonHelper.EncapsulateInWrapper(response.ResponseBody);
                 User[] developers = JsonHelper.FromJson<User>(json);
                 return developers;
+            }
+        }
+
+        public static async Task<Requirement> BecomeDeveloperOfRequirement(int requirementId)
+        {
+            string url = baseUrl + "requirements/" + requirementId + "/developers";
+
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Response response = await Rest.PostAsync(url, headers);
+            if (!response.Successful)
+            {
+                Debug.LogError(response.ResponseCode + ": " + response.ResponseBody);
+                return null;
+            }
+            else
+            {
+                Requirement req = JsonUtility.FromJson<Requirement>(response.ResponseBody);
+                return req;
             }
         }
 
