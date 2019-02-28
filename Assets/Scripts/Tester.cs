@@ -16,14 +16,7 @@ namespace Org.Requirements_Bazaar.Common
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Debug.Log("Posting");
-                Project proj = await RequirementsBazaar.GetProject(399);
-                proj.description = "Requirements of the AR/VR form";
-                Project result = await RequirementsBazaar.UpdateProject(proj);
-                Debug.Log("Id: " + result.id);
-                Debug.Log("Name: " + result.name);
-                Debug.Log("Description: " + result.description);
-                Debug.Log("Default Category: " + result.defaultCategoryId);
-                Debug.Log("Leader " + result.leader);
+                
             }
         }
     }

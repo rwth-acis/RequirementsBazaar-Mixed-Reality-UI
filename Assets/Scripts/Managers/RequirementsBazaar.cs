@@ -220,6 +220,25 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        public static async Task<Project> FollowProject(int projectId)
+        {
+            string url = baseUrl + "projects/" + projectId.ToString() + "/followers";
+
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Response response = await Rest.PostAsync(url, headers);
+            if (!response.Successful)
+            {
+                Debug.LogError(response.ResponseBody);
+                return null;
+            }
+            else
+            {
+                Project project = JsonUtility.FromJson<Project>(response.ResponseBody);
+                return project;
+            }
+        }
+
         public static async Task<Requirement[]> GetProjectRequirements
             (int projectId, int page = 0, int per_page = 10, string search = "",
             RequirementState filterState = RequirementState.ALL, RequirementsSortingMode sortMode = RequirementsSortingMode.DEFAULT)
