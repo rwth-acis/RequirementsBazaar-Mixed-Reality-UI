@@ -112,7 +112,7 @@ namespace Org.Requirements_Bazaar.API
 
         public static async Task<Project> UpdateProject(Project toUpdate)
         {
-            string url = baseUrl + "projects/" + toUpdate.id;
+            string url = baseUrl + "projects/" + toUpdate.Id;
 
             Dictionary<string, string> headers = Utilities.GetStandardHeaders();
 
@@ -336,7 +336,7 @@ namespace Org.Requirements_Bazaar.API
             {
                 Project proj = await GetProject(projectId);
                 cats = new Category[1];
-                cats[0] = await GetCategory(proj.defaultCategoryId);
+                cats[0] = await GetCategory(proj.DefaultCategoryId);
             }
 
             JsonCreateRequirement toCreate = new JsonCreateRequirement() { projectId = projectId, name = name, description = description, categories = cats };

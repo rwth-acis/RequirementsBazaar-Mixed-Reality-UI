@@ -18,13 +18,6 @@ namespace Org.Requirements_Bazaar.Common
                 Debug.Log("Posting");
 
                 Project proj = await RequirementsBazaar.GetProject(400);
-                proj.visibility = false;
-                Project res = await RequirementsBazaar.UpdateProject(proj);
-
-                //req.description = "changed in Unity code";
-                //Requirement res = await RequirementsBazaar.UpdateRequirement(req);
-                //Debug.Log(res.name);
-                //Debug.Log(res.description);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using HoloToolkit.Unity;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,16 +22,31 @@ namespace Org.Requirements_Bazaar.Managers
 
         const string scopes = "openid%20profile%20email";
 
-        public string AccessToken { get { return accessToken; } }
+        public string AccessToken
+        {
+            get { return accessToken; }
+            private set
+            {
+                accessToken = value;
+                OnAccessTokenChanged(EventArgs.Empty);
+            }
+        }
+
+        public event EventHandler AccessTokenChanged;
+
+        protected virtual void OnAccessTokenChanged(EventArgs args)
+        {
+            AccessTokenChanged?.Invoke(this, args);
+        }
 
         private void Start()
         {
             // skip the login by using the debug token
             if (Application.isEditor)
             {
-                if (string.IsNullOrEmpty(accessToken))
+                if (string.IsNullOrEmpty(AccessToken))
                 {
-                    accessToken = debugToken;
+                    AccessToken = debugToken;
                     AddAccessTokenToHeader();
                 }
                 CheckAccessToken();
@@ -54,17 +70,17 @@ namespace Org.Requirements_Bazaar.Managers
         {
             if (RestManager.Instance.StandardHeader.ContainsKey("Authorization"))
             {
-                RestManager.Instance.StandardHeader["Authorization"] = "Bearer " + accessToken;
+                RestManager.Instance.StandardHeader["Authorization"] = "Bearer " + AccessToken;
             }
             else
             {
-                RestManager.Instance.StandardHeader.Add("Authorization", "Bearer " + accessToken);
+                RestManager.Instance.StandardHeader.Add("Authorization", "Bearer " + AccessToken);
             }
         }
 
         private void CheckAccessToken()
         {
-            RestManager.Instance.GET(learningLayersUserInfoEndpoint + "?access_token=" + accessToken, OnLogin);
+            RestManager.Instance.GET(learningLayersUserInfoEndpoint + "?access_token=" + AccessToken, OnLogin);
         }
     }
 
