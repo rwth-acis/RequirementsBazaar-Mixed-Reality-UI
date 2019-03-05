@@ -16,11 +16,15 @@ namespace Org.Requirements_Bazaar.Common
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Debug.Log("Posting");
-                Requirement req = await RequirementsBazaar.GetRequirement(2100);
-                req.description = "changed in Unity code";
-                Requirement res = await RequirementsBazaar.UpdateRequirement(req);
-                Debug.Log(res.name);
-                Debug.Log(res.description);
+
+                Project proj = await RequirementsBazaar.GetProject(400);
+                proj.visibility = false;
+                Project res = await RequirementsBazaar.UpdateProject(proj);
+
+                //req.description = "changed in Unity code";
+                //Requirement res = await RequirementsBazaar.UpdateRequirement(req);
+                //Debug.Log(res.name);
+                //Debug.Log(res.description);
             }
         }
     }

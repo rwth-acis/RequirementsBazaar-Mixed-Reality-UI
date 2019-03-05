@@ -17,7 +17,7 @@ namespace Org.Requirements_Bazaar.API
     {
         private const string baseUrl = "https://requirements-bazaar.org/bazaar/";
 
-        #region projects
+        #region Projects
 
         /// <summary>
         /// Retrieves all projecs on the given page.
@@ -35,7 +35,9 @@ namespace Org.Requirements_Bazaar.API
                 url += "&sort=" + mode.ToString().ToLower();
             }
 
-            Response response = await Rest.GetAsync(url);
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Response response = await Rest.GetAsync(url, headers);
             if (!response.Successful)
             {
                 Debug.LogError(response.ResponseBody);
@@ -748,11 +750,13 @@ namespace Org.Requirements_Bazaar.API
 
         #region Users
 
-        public static async Task<User> GetUser()
+        public static async Task<User> GetMyUser()
         {
             string url = baseUrl + "users/me";
 
-            Response response = await Rest.GetAsync(url);
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Response response = await Rest.GetAsync(url, headers);
 
             if (!response.Successful)
             {

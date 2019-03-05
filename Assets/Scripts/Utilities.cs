@@ -22,7 +22,10 @@ namespace Org.Requirements_Bazaar.Common
         public static Dictionary<string, string> GetStandardHeaders()
         {
             Dictionary<string, string> headers = new Dictionary<string, string>();
-            headers.Add("Authorization", "Bearer " + AuthorizationManager.Instance.AccessToken);
+            if (!string.IsNullOrEmpty(AuthorizationManager.Instance.AccessToken))
+            {
+                headers.Add("Authorization", "Bearer " + AuthorizationManager.Instance.AccessToken);
+            }
             return headers;
         }
     }
