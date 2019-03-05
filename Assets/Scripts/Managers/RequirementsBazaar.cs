@@ -51,6 +51,12 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// Creates the given project object on the server
+        /// </summary>
+        /// <param name="toCreate">The project to create.</param>
+        /// <returns>The set up project.
+        /// Please use this result for further computations (instead of the toCreate object) since the server filled out all fields, e.g. an id was assigned</returns>
         public static async Task<Project> CreateProject(Project toCreate)
         {
             string url = baseUrl + "projects/";
@@ -110,6 +116,12 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// Updates the project by uploading it to the server
+        /// Recommended usage: First retrieve the project object using GetProject, then change its values and then pass it to this method.
+        /// </summary>
+        /// <param name="toUpdate">The project which should be updated on the server.</param>
+        /// <returns>The resulting, changed project as it has been stored on the server.</returns>
         public static async Task<Project> UpdateProject(Project toUpdate)
         {
             string url = baseUrl + "projects/" + toUpdate.Id;
@@ -156,7 +168,9 @@ namespace Org.Requirements_Bazaar.API
                 url += "&search=" + searchFilter;
             }
 
-            Response response = await Rest.GetAsync(url);
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Response response = await Rest.GetAsync(url, headers);
             if (!response.Successful)
             {
                 Debug.LogError(response.ResponseBody);
@@ -179,7 +193,10 @@ namespace Org.Requirements_Bazaar.API
         {
             string url = baseUrl + "projects/" + projectId.ToString() + "/contributors";
 
+            // does not require authorization
+
             Response response = await Rest.GetAsync(url);
+
             if (!response.Successful)
             {
                 Debug.LogError(response.ResponseBody);
@@ -208,6 +225,8 @@ namespace Org.Requirements_Bazaar.API
                 url += "&page=" + page.ToString();
             }
 
+            // doesn not requrie authorization
+
             Response response = await Rest.GetAsync(url);
             if (!response.Successful)
             {
@@ -222,6 +241,11 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// When called, the user will follow the project
+        /// </summary>
+        /// <param name="projectId">The id of the project to follow</param>
+        /// <returns>The project which has been followed</returns>
         public static async Task<Project> FollowProject(int projectId)
         {
             string url = baseUrl + "projects/" + projectId.ToString() + "/followers";
@@ -240,6 +264,7 @@ namespace Org.Requirements_Bazaar.API
                 return project;
             }
         }
+
 
         public static async Task<Requirement[]> GetProjectRequirements
             (int projectId, int page = 0, int per_page = 10, string search = "",

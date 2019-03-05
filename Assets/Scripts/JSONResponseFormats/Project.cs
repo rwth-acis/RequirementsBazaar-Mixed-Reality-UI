@@ -23,6 +23,23 @@ namespace Org.Requirements_Bazaar.DataModel
         [SerializeField] private int numberOfFollowers;
         [SerializeField] private bool isFollower;
 
+        /// <summary>
+        /// Creates a new project and assigns the currently logged in user as the leader
+        /// </summary>
+        /// <param name="name">The name/title of the project</param>
+        /// <param name="description">The description of the project</param>
+        /// <param name="visibility">True if the project should be public</param>
+        public Project(string name, string description, bool visibility) : this(name, description, visibility, null)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new project
+        /// </summary>
+        /// <param name="name">The name/title of the project</param>
+        /// <param name="description">The description of the project</param>
+        /// <param name="visibility">True if the project should be public</param>
+        /// <param name="leader">The leader of the project</param>
         public Project(string name, string description, bool visibility, User leader)
         {
             this.name = name;
@@ -33,6 +50,9 @@ namespace Org.Requirements_Bazaar.DataModel
 
         #region Properties
 
+        /// <summary>
+        /// The id of the project
+        /// </summary>
         public int Id
         {
             get
@@ -41,6 +61,9 @@ namespace Org.Requirements_Bazaar.DataModel
             }
         }
 
+        /// <summary>
+        /// The name/title of the project
+        /// </summary>
         public string Name
         {
             get
@@ -54,6 +77,9 @@ namespace Org.Requirements_Bazaar.DataModel
             }
         }
 
+        /// <summary>
+        /// A description of the project content
+        /// </summary>
         public string Description
         {
             get
@@ -67,6 +93,9 @@ namespace Org.Requirements_Bazaar.DataModel
             }
         }
 
+        /// <summary>
+        /// If true, the project is visible to other users
+        /// </summary>
         public bool Visibility
         {
             get
@@ -80,6 +109,9 @@ namespace Org.Requirements_Bazaar.DataModel
             }
         }
 
+        /// <summary>
+        /// The category id where requirements are stored by default if no category was specified for them
+        /// </summary>
         public int DefaultCategoryId
         {
             get
@@ -93,6 +125,9 @@ namespace Org.Requirements_Bazaar.DataModel
             }
         }
 
+        /// <summary>
+        /// The leader of the project
+        /// </summary>
         public User Leader
         {
             get
@@ -106,6 +141,9 @@ namespace Org.Requirements_Bazaar.DataModel
             }
         }
 
+        /// <summary>
+        /// Timestamp of the time when the project was created
+        /// </summary>
         public string CreationDate
         {
             get
@@ -114,6 +152,9 @@ namespace Org.Requirements_Bazaar.DataModel
             }
         }
 
+        /// <summary>
+        /// Timestamp of the time when the project was last updated
+        /// </summary>
         public string LastUpdatedDate
         {
             get
@@ -122,6 +163,9 @@ namespace Org.Requirements_Bazaar.DataModel
             }
         }
 
+        /// <summary>
+        /// Counts the number of categories in this project
+        /// </summary>
         public int NumberOfCategories
         {
             get
@@ -130,6 +174,9 @@ namespace Org.Requirements_Bazaar.DataModel
             }
         }
 
+        /// <summary>
+        /// Counts the number of requirements in this project
+        /// </summary>
         public int NumberOfRequirements
         {
             get
@@ -138,6 +185,9 @@ namespace Org.Requirements_Bazaar.DataModel
             }
         }
 
+        /// <summary>
+        /// Counts the number of users who are following this project
+        /// </summary>
         public int NumberOfFollowers
         {
             get
@@ -146,16 +196,14 @@ namespace Org.Requirements_Bazaar.DataModel
             }
         }
 
+        /// <summary>
+        /// True if the currently logged in user is following the project
+        /// </summary>
         public bool IsFollower
         {
             get
             {
                 return isFollower;
-            }
-
-            set
-            {
-                isFollower = value;
             }
         }
 

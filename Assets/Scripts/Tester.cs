@@ -16,8 +16,6 @@ namespace Org.Requirements_Bazaar.Common
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Debug.Log("Posting");
-
-                Project proj = await RequirementsBazaar.GetProject(400);
             }
         }
     }
