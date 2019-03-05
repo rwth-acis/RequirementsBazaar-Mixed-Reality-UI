@@ -302,16 +302,35 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// Gets the statistics for the given project
+        /// </summary>
+        /// <param name="projectId">The project which should be analyzed</param>
+        /// <returns></returns>
         public static async Task<Statistics> GetProjectStatistics(int projectId)
         {
             return await GetProjectStatistics(projectId, false, DateTime.Now);
         }
 
+        /// <summary>
+        /// Gets the statistics for the given project starting at a point in the past until the present
+        /// </summary>
+        /// <param name="projectId">The project which should be analyzed</param>
+        /// <param name="since">Starting point from which onwards the statistics should be counted</param>
+        /// <returns></returns>
         public static async Task<Statistics> GetProjectStatistics(int projectId, DateTime since)
         {
             return await GetProjectStatistics(projectId, true, since);
         }
 
+        /// <summary>
+        /// Combination method for the GetProjectStatistics calls with and without a "since" parameter
+        /// Gets the project statistics according to the settings whether a starting point should be used or not
+        /// </summary>
+        /// <param name="projectId">The project which should be analyzed</param>
+        /// <param name="useSince">True if the since parameter should be regarded, else the statistics from the complete past will be fetched</param>
+        /// <param name="since">Starting point from which onwards the statistics should be counted (only regarded if useSince is true)</param>
+        /// <returns>The project statistics</returns>
         private static async Task<Statistics> GetProjectStatistics(int projectId, bool useSince, DateTime since)
         {
             string url = baseUrl + "projects/" + projectId.ToString() + "/statistics";
@@ -321,6 +340,8 @@ namespace Org.Requirements_Bazaar.API
                 string sinceParam = since.ToString("yyyy-MM-ddTHH\\:mm\\:ssZ");
                 url += "?since=" + sinceParam;
             }
+
+            // does not require authorization
 
             Response response = await Rest.GetAsync(url);
 
@@ -340,6 +361,14 @@ namespace Org.Requirements_Bazaar.API
 
         #region Requirements
 
+        /// <summary>
+        /// Creates and posts a new requirement
+        /// </summary>
+        /// <param name="projectId">The id of the project where the requirement will be posted</param>
+        /// <param name="name">The name/title of the requirement</param>
+        /// <param name="description">The description of the requirement</param>
+        /// <param name="categoryIds">An array of category ids in which the requirements will be put</param>
+        /// <returns></returns>
         public static async Task<Requirement> CreateRequirement(int projectId, string name, string description, int[] categoryIds = null)
         {
             string url = baseUrl + "requirements/";
@@ -348,9 +377,10 @@ namespace Org.Requirements_Bazaar.API
 
             Category[] cats = null;
 
-            // convert the supplied category ids to actual category data
+            // check if categories were supplied; if yes: fetch their data
             if (categoryIds != null)
             {
+                // convert the supplied category ids to actual category data
                 cats = new Category[categoryIds.Length];
                 for (int i=0; i<categoryIds.Length;i++)
                 {
@@ -364,7 +394,7 @@ namespace Org.Requirements_Bazaar.API
                 cats[0] = await GetCategory(proj.DefaultCategoryId);
             }
 
-            JsonCreateRequirement toCreate = new JsonCreateRequirement() { projectId = projectId, name = name, description = description, categories = cats };
+            JsonCreateRequirement toCreate = new JsonCreateRequirement(projectId, name, description, cats);
 
             string json = JsonUtility.ToJson(toCreate);
 

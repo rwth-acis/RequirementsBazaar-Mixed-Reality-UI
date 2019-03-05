@@ -1478,7 +1478,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clientId: c4ced10f-ce0f-4155-b6f7-a4c40ffa410c
-  debugToken: eyJhbGciOiJSUzI1NiJ9.eyJhdWQiOlsiYzc1ODhlZmMtZjgzMS00ZTMxLTkyOGUtMGY0NmE5MWZiMzExIl0sImlzcyI6Imh0dHBzOlwvXC9hcGkubGVhcm5pbmctbGF5ZXJzLmV1XC9vXC9vYXV0aDJcLyIsImV4cCI6MTU1MTc5MDI2NiwiaWF0IjoxNTUxNzg2NjY2LCJqdGkiOiJjNWUwYjdhYy0wODU5LTQ4MmMtYjBjNy0wMGJiMDk5ZDMxODgifQ.Demy1aXyh1d5fb9b8Ta5BQKkFplXOxaWZk3prDfza33YrIAGss7OT4lyDKiwZg0PUgVJKFq9hfF_M5K5WvFKQV81J8wSVx4COguiiNmNQ3mPsTr_melcMAaL3aTdpGD9gbfB5YKdhSl4hiaXDY_nPjdAJaXpFrK75-ZLVYAc520
+  debugToken: 
 --- !u!1 &2098316713
 GameObject:
   m_ObjectHideFlags: 0
