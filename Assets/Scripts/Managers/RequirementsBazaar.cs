@@ -394,7 +394,7 @@ namespace Org.Requirements_Bazaar.API
                 cats[0] = await GetCategory(proj.DefaultCategoryId);
             }
 
-            JsonCreateRequirement toCreate = new JsonCreateRequirement(projectId, name, description, cats);
+            UploadableRequirement toCreate = new UploadableRequirement(name, description, projectId, cats);
 
             string json = JsonUtility.ToJson(toCreate);
 
@@ -431,31 +431,32 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
-        ///// <summary>
-        ///// Updates the specified requirement
-        ///// Please first query for the requirement to change, then changing its parameters and then supply it to this function
-        ///// </summary>
-        ///// <param name="toUpdate">The requirement to update</param>
-        ///// <returns></returns>
-        //public static async Task<Requirement> UpdateRequirement(Requirement toUpdate)
-        //{
-        //    string url = baseUrl + "requirements/" + toUpdate.id;
+        /// <summary>
+        /// Updates the specified requirement
+        /// Please first query for the requirement to change, then changing its parameters and then supply it to this function
+        /// </summary>
+        /// <param name="toUpdate">The requirement to update</param>
+        /// <returns></returns>
+        public static async Task<Requirement> UpdateRequirement(Requirement toUpdate)
+        {
+            string url = baseUrl + "requirements/" + toUpdate.Id;
 
-        //    Dictionary<string, string> headers = Utilities.GetStandardHeaders();
-        //    string json = JsonUtility.ToJson(toUpdate);
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+            UploadableRequirement uploadableRequirement = toUpdate.ToUploadFormat();
+            string json = JsonUtility.ToJson(uploadableRequirement);
 
-        //    Response response = await Rest.PutAsync(url, json, headers);
-        //    if (!response.Successful)
-        //    {
-        //        Debug.LogError(response.ResponseCode + ": " + response.ResponseBody);
-        //        return null;
-        //    }
-        //    else
-        //    {
-        //        Requirement requirement = JsonUtility.FromJson<Requirement>(response.ResponseBody);
-        //        return requirement;
-        //    }
-        //}
+            Response response = await Rest.PutAsync(url, json, headers);
+            if (!response.Successful)
+            {
+                Debug.LogError(response.ResponseCode + ": " + response.ResponseBody);
+                return null;
+            }
+            else
+            {
+                Requirement requirement = JsonUtility.FromJson<Requirement>(response.ResponseBody);
+                return requirement;
+            }
+        }
 
         public static async Task<Attachment[]> GetRequirementAttachments(int requirementId, int page = 0, int per_page = 10)
         {

@@ -36,9 +36,9 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
 
         private void UpdateDisplay()
         {
-            titleLabel.text = requirement.name;
-            descriptionLabel.text = requirement.description;
-            votesLabel.text = requirement.upVotes.ToString();
+            titleLabel.text = requirement.Name;
+            descriptionLabel.text = requirement.Description;
+            votesLabel.text = requirement.UpVotes.ToString();
         }
 
         public void OnClick()
@@ -47,7 +47,7 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
             GameObject createEditPage = Instantiate(RequirementsBazaarUI.Instance.CreateEditRequirementPage);
             createEditPage.transform.position = canvas.position;
             RequirementsBazaarCreateEditRequirementForm createEditForm = createEditPage.GetComponent<RequirementsBazaarCreateEditRequirementForm>();
-            createEditForm.RequirementId = Requirement.id;
+            createEditForm.RequirementId = Requirement.Id;
             createEditForm.PageClosed += OnInstantiatedPageClosed;
 
             canvas.gameObject.SetActive(false);

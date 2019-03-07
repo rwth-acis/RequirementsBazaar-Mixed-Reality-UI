@@ -16,7 +16,11 @@ namespace Org.Requirements_Bazaar.Common
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Debug.Log("Posting");
-                
+                //Requirement req = await RequirementsBazaar.GetRequirement(2101);
+                //req.Description = "updated description";
+                //Requirement res = await RequirementsBazaar.UpdateRequirement(req);
+
+                await RequirementsBazaar.CreateRequirement(400, "Requirement 2", "created requirement with new upload format");
             }
         }
     }

@@ -91,17 +91,17 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
             }
 
             requirement = await RequirementsBazaar.GetRequirement(requirementId);
-            projectId = requirement.projectId;
+            projectId = requirement.ProjectId;
 
             await GetCategories();
 
-            titleInputField.text = requirement.name;
-            descriptionInputField.text = requirement.description;
-            if (availableCategories != null && requirement.categories.Length > 0)
+            titleInputField.text = requirement.Name;
+            descriptionInputField.text = requirement.Description;
+            if (availableCategories != null && requirement.Categories.Length > 0)
             {
                 for (int i = 0; i < availableCategories.Length; i++)
                 {
-                    if (availableCategories[i].name == requirement.categories[0].name)
+                    if (availableCategories[i].name == requirement.Categories[0].name)
                     {
                         categoryDropdown.value = i;
                         categoryDropdown.RefreshShownValue();
@@ -131,10 +131,10 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
             if (IsNewRequirement)
             {
                 requirement = new Requirement();
-                requirement.name = titleInputField.text;
-                requirement.description = descriptionInputField.text;
-                requirement.projectId = projectId;
-                requirement.categories = new Category[] { availableCategories[categoryDropdown.value]};
+                requirement.Name = titleInputField.text;
+                requirement.Description = descriptionInputField.text;
+                requirement.ProjectId = projectId;
+                requirement.Categories = new Category[] { availableCategories[categoryDropdown.value]};
             }
             else
             {
