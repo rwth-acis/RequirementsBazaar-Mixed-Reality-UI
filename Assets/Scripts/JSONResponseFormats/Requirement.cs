@@ -6,7 +6,9 @@ using UnityEngine;
 
 namespace Org.Requirements_Bazaar.DataModel
 {
-
+    /// <summary>
+    /// A requirement
+    /// </summary>
     [Serializable]
     public class Requirement
     {

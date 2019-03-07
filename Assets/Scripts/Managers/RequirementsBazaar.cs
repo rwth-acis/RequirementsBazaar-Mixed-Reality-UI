@@ -411,6 +411,11 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// Gets a specific requirement by its id
+        /// </summary>
+        /// <param name="requirementId">The id of the requirement which should be fetched</param>
+        /// <returns>The fetched requirement</returns>
         public static async Task<Requirement> GetRequirement(int requirementId)
         {
             string url = baseUrl + "requirements/" + requirementId.ToString();
@@ -436,12 +441,13 @@ namespace Org.Requirements_Bazaar.API
         /// Please first query for the requirement to change, then changing its parameters and then supply it to this function
         /// </summary>
         /// <param name="toUpdate">The requirement to update</param>
-        /// <returns></returns>
+        /// <returns>The updated requirement</returns>
         public static async Task<Requirement> UpdateRequirement(Requirement toUpdate)
         {
             string url = baseUrl + "requirements/" + toUpdate.Id;
 
             Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+            // convert the requirement to a uploadable format (the statistic fields of the requirement are not recognized as input by the service)
             UploadableRequirement uploadableRequirement = toUpdate.ToUploadFormat();
             string json = JsonUtility.ToJson(uploadableRequirement);
 
@@ -458,6 +464,13 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// Gets a list of attachments which have been added to the specified requirement, divided into pages
+        /// </summary>
+        /// <param name="requirementId">The id of the requirement</param>
+        /// <param name="page">The page number in the list</param>
+        /// <param name="per_page">Specifies how many items should be on one page</param>
+        /// <returns>The array of attachments on the given page of the specified requirement</returns>
         public static async Task<Attachment[]> GetRequirementAttachments(int requirementId, int page = 0, int per_page = 10)
         {
             string url = baseUrl + "requirements/" + requirementId + "/attachments?per_page=" + per_page.ToString();
@@ -466,8 +479,9 @@ namespace Org.Requirements_Bazaar.API
                 url += "&page=" + page.ToString();
             }
 
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
 
-            Response response = await Rest.GetAsync(url);
+            Response response = await Rest.GetAsync(url, headers);
 
             if (!response.Successful)
             {
@@ -482,6 +496,13 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// Gets the list of comments on a specific requirement, divided into pages
+        /// </summary>
+        /// <param name="requirementId">The id of the requirement</param>
+        /// <param name="page">The page number in the list</param>
+        /// <param name="per_page">Specifies how many items should be on one page</param>
+        /// <returns>The array of comments on the given page</returns>
         public static async Task<Comment[]> GetRequirementComments(int requirementId, int page = 0, int per_page = 10)
         {
             string url = baseUrl + "requirements/" + requirementId.ToString() + "/comments?per_page=" + per_page.ToString();
