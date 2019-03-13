@@ -812,11 +812,18 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// Gets a specific comment by its id
+        /// </summary>
+        /// <param name="commentId">The id of the comment</param>
+        /// <returns>The comment</returns>
         public static async Task<Comment> GetComment(int commentId)
         {
             string url = baseUrl + "comments/" + commentId.ToString();
 
-            Response response = await Rest.GetAsync(url);
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Response response = await Rest.GetAsync(url, headers);
 
             if (!response.Successful)
             {
@@ -833,6 +840,28 @@ namespace Org.Requirements_Bazaar.API
         #endregion
 
         #region Categories
+
+        public static async Task<Category> CreateCategory(Category toCreate)
+        {
+            string url = baseUrl + "categories/";
+
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            string json = JsonUtility.ToJson(toCreate);
+
+            Response response = await Rest.PostAsync(url, json, headers);
+
+            if (!response.Successful)
+            {
+                Debug.LogError(response.ResponseCode + ": " + response.ResponseBody);
+                return null;
+            }
+            else
+            {
+                Category category = JsonUtility.FromJson<Category>(response.ResponseBody);
+                return category;
+            }
+        }
 
         public static async Task<Category> GetCategory(int categoryId)
         {
