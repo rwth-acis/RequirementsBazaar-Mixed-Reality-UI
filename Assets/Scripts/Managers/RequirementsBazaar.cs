@@ -382,7 +382,7 @@ namespace Org.Requirements_Bazaar.API
             {
                 // convert the supplied category ids to actual category data
                 cats = new Category[categoryIds.Length];
-                for (int i=0; i<categoryIds.Length;i++)
+                for (int i = 0; i < categoryIds.Length; i++)
                 {
                     cats[i] = await GetCategory(categoryIds[i]);
                 }
@@ -526,11 +526,18 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// Returns the contributors of a requirement
+        /// </summary>
+        /// <param name="requirementId">The id of the requirement</param>
+        /// <returns>The contributors in a dedicated contributors object format</returns>
         public static async Task<RequirementContributors> GetRequirementContributors(int requirementId)
         {
             string url = baseUrl + "requirements/" + requirementId.ToString() + "/contributors";
 
-            Response response = await Rest.GetAsync(url);
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Response response = await Rest.GetAsync(url, headers);
 
             if (!response.Successful)
             {
@@ -544,6 +551,13 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// Gets the developers of a requirement, divided into pages
+        /// </summary>
+        /// <param name="requirementId">The id of the requirement</param>
+        /// <param name="page">The page number</param>
+        /// <param name="per_page">Specifies how many items should be on one page</param>
+        /// <returns>An array with the developer entries on the specified page</returns>
         public static async Task<User[]> GetRequirementDevelopers(int requirementId, int page = 0, int per_page = 10)
         {
             string url = baseUrl + "requirements/" + requirementId.ToString() + "/developers";
@@ -554,7 +568,9 @@ namespace Org.Requirements_Bazaar.API
                 url += "&page=" + page.ToString();
             }
 
-            Response response = await Rest.GetAsync(url);
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Response response = await Rest.GetAsync(url, headers);
 
             if (!response.Successful)
             {
@@ -569,6 +585,11 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// Sets the currently logged in user as a developer of the requirement
+        /// </summary>
+        /// <param name="requirementId">The id of the requirement</param>
+        /// <returns>The requirement which the logged in user is now developing</returns>
         public static async Task<Requirement> BecomeDeveloperOfRequirement(int requirementId)
         {
             string url = baseUrl + "requirements/" + requirementId + "/developers";
@@ -588,6 +609,13 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// Returns the followers of a requirement
+        /// </summary>
+        /// <param name="requirementId">The id of the requirement</param>
+        /// <param name="page">The page number in the list</param>
+        /// <param name="per_page">Specifies how many items should be on one page</param>
+        /// <returns>An array of users which follow the requirement (and are on the specified page)</returns>
         public static async Task<User[]> GetRequirementFollowers(int requirementId, int page = 0, int per_page = 10)
         {
             string url = baseUrl + "requirements/" + requirementId.ToString() + "/followers";
@@ -599,7 +627,9 @@ namespace Org.Requirements_Bazaar.API
                 url += "&page=" + page.ToString();
             }
 
-            Response response = await Rest.GetAsync(url);
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Response response = await Rest.GetAsync(url, headers);
 
             if (!response.Successful)
             {
@@ -614,16 +644,84 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// Makes the currently logged in user follow the requirement
+        /// </summary>
+        /// <param name="requirementId">The id of the requirement</param>
+        /// <returns>The requirement with the given id</returns>
+        public static async Task<Requirement> FollowRequirement(int requirementId)
+        {
+            string url = baseUrl + "requirements/" + requirementId.ToString() + "/followers";
+
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Response response = await Rest.PostAsync(url, headers);
+
+            if (!response.Successful)
+            {
+                Debug.LogError(response.ResponseCode + ": " + response.ResponseBody);
+                return null;
+            }
+            else
+            {
+                Requirement resRequirement = JsonUtility.FromJson<Requirement>(response.ResponseBody);
+                return resRequirement;
+            }
+        }
+
+        /// <summary>
+        /// Makes the currently logged in user the lead developer of the requirement
+        /// </summary>
+        /// <param name="requirementId">The id of the requiremnt</param>
+        /// <returns>The specified requirement</returns>
+        public static async Task<Requirement> BecomeLeadDeveloperOfRequirement(int requirementId)
+        {
+            string url = baseUrl + "requirements/" + requirementId.ToString() + "/leaddevelopers";
+
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Response response = await Rest.PostAsync(url, headers);
+
+            if (!response.Successful)
+            {
+                Debug.LogError(response.ResponseCode + ": " + response.ResponseBody);
+                return null;
+            }
+            else
+            {
+                Requirement resRequirement = JsonUtility.FromJson<Requirement>(response.ResponseBody);
+                return resRequirement;
+            }
+        }
+
+        /// <summary>
+        /// Gets the all-time statistics of the specified requirement
+        /// </summary>
+        /// <param name="requirementId">The id of the requirement</param>
+        /// <returns>The statistics of the requirement</returns>
         public static async Task<Statistics> GetRequirementStatistics(int requirementId)
         {
             return await GetRequirementStatistics(requirementId, false, DateTime.Now);
         }
 
+        /// <summary>
+        /// Gets teh statistics of the specified requirement since some date
+        /// </summary>
+        /// <param name="requirementId">The id of the requirement</param>
+        /// <param name="since">The starting point in time since when the statistics should be counted</param>
+        /// <returns>The statistics of teh requirement</returns>
         public static async Task<Statistics> GetRequirementStatistics(int requirementId, DateTime since)
         {
             return await GetRequirementStatistics(requirementId, true, since);
         }
 
+        /// <summary>
+        /// Internal function for getting the statistics of a requirement by giving the option of using a since-date
+        /// </summary>
+        /// <param name="requirementId">The id of the requirement</param>
+        /// <param name="useSince">If true, the since paramter is regarded as the starting point for the statistics</param>
+        /// <param name="since">Date since when the statistics should count</param>
+        /// <returns>The statistics of the requirement</returns>
         private static async Task<Statistics> GetRequirementStatistics(int requirementId, bool useSince, DateTime since)
         {
             string url = baseUrl + "requirements/" + requirementId.ToString() + "/statistics";
@@ -645,6 +743,32 @@ namespace Org.Requirements_Bazaar.API
             {
                 Statistics statistics = JsonUtility.FromJson<Statistics>(response.ResponseBody);
                 return statistics;
+            }
+        }
+
+        /// <summary>
+        /// Lets the currently logged in user vote for or against a requirement
+        /// </summary>
+        /// <param name="requirementId">The id of the requirement</param>
+        /// <param name="direction">The voting direction; by default UP</param>
+        /// <returns>The requirement for which the user voted</returns>
+        public static async Task<Requirement> VoteForRequirement(int requirementId, VotingDirection direction = VotingDirection.UP)
+        {
+            string url = baseUrl + "requirements/" + requirementId.ToString() + "/votes?direction=" + direction.ToString().ToLower();
+
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Response response = await Rest.PostAsync(url, headers);
+
+            if (!response.Successful)
+            {
+                Debug.LogError(response.ResponseCode + ": " + response.ResponseBody);
+                return null;
+            }
+            else
+            {
+                Requirement resRequirement = JsonUtility.FromJson<Requirement>(response.ResponseBody);
+                return resRequirement;
             }
         }
 
