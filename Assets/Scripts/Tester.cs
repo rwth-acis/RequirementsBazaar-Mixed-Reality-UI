@@ -17,7 +17,13 @@ namespace Org.Requirements_Bazaar.Common
             {
                 Debug.Log("Posting");
 
-                Requirement res = await RequirementsBazaar.VoteForRequirement(2101, VotingDirection.DOWN);
+                // 1387
+
+                Comment comment = new Comment("comment which is not a reply", 2101);
+                Comment res = await RequirementsBazaar.CreateComment(comment);
+
+                //Comment comment = await RequirementsBazaar.GetComment(1387);
+                //Debug.Log(comment.ReplyToComment);
             }
         }
     }

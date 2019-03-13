@@ -2,7 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum VotingDirection
+namespace Org.Requirements_Bazaar.DataModel
 {
-    UP, DOWN
+
+    public enum VotingDirection
+    {
+        UP, DOWN
+    }
+
 }

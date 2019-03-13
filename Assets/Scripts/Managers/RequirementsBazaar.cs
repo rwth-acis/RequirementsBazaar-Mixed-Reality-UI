@@ -776,6 +776,42 @@ namespace Org.Requirements_Bazaar.API
 
         #region Comments
 
+        /// <summary>
+        /// Creates a comment on the server
+        /// </summary>
+        /// <param name="toPost">The comment which should be posted to the requirement</param>
+        /// <returns>The created comment</returns>
+        public static async Task<Comment> CreateComment(Comment toPost)
+        {
+            string url = baseUrl + "comments/";
+
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            string json;
+            if (toPost.IsReplyingToOtherComment)
+            {
+                json = JsonUtility.ToJson(toPost);
+            }
+            else
+            {
+                NoReplyComment converted = toPost.ToNoReplyComment();
+                json = JsonUtility.ToJson(converted);
+            }
+
+            Response response = await Rest.PostAsync(url, json, headers);
+
+            if (!response.Successful)
+            {
+                Debug.LogError(response.ResponseCode + ": " + response.ResponseBody);
+                return null;
+            }
+            else
+            {
+                Comment comment = JsonUtility.FromJson<Comment>(response.ResponseBody);
+                return comment;
+            }
+        }
+
         public static async Task<Comment> GetComment(int commentId)
         {
             string url = baseUrl + "comments/" + commentId.ToString();
