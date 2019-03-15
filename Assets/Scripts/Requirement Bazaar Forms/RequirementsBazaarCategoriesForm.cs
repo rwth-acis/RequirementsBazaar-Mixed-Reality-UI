@@ -120,7 +120,7 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
         private void CreateCategoryDisplayElement(Category category)
         {
             RectTransform categoryDisplayTransform = Instantiate(categoryDisplayTemplate, categoryDisplayTemplate.parent);
-            categoryDisplayTransform.name = "Category (ID " + category.id + ")";
+            categoryDisplayTransform.name = "Category (ID " + category.Id + ")";
             categoryDisplayTransform.gameObject.SetActive(true);
             CategoryDisplayElement categoryDisplayElement = categoryDisplayTransform.GetComponent<CategoryDisplayElement>();
             categoryDisplayElement.Category = category;

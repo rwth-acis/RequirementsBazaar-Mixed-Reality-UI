@@ -841,6 +841,11 @@ namespace Org.Requirements_Bazaar.API
 
         #region Categories
 
+        /// <summary>
+        /// Creates a category on the server
+        /// </summary>
+        /// <param name="toCreate">The category to create</param>
+        /// <returns>The created category</returns>
         public static async Task<Category> CreateCategory(Category toCreate)
         {
             string url = baseUrl + "categories/";
@@ -863,6 +868,11 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// Gets a category by its ID
+        /// </summary>
+        /// <param name="categoryId">The ID of the category</param>
+        /// <returns>The category</returns>
         public static async Task<Category> GetCategory(int categoryId)
         {
             string url = baseUrl + "categories/" + categoryId.ToString();
@@ -883,6 +893,39 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// Updates a given category.
+        /// Recommended usage: Download the category using GetCategory, then change its properties and then pass it to this method to update it on the server.
+        /// </summary>
+        /// <param name="toUpdate">The category to update</param>
+        /// <returns>The updated category as it was saved on the server</returns>
+        public static async Task<Category> UpdateCategory(Category toUpdate)
+        {
+            string url = baseUrl + "categories/" + toUpdate.Id.ToString();
+
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            string json = JsonUtility.ToJson(toUpdate);
+
+            Response response = await Rest.PutAsync(url, json, headers);
+
+            if (!response.Successful)
+            {
+                Debug.LogError(response.ResponseCode + ": " + response.ResponseBody);
+                return null;
+            }
+            else
+            {
+                Category category = JsonUtility.FromJson<Category>(response.ResponseBody);
+                return category;
+            }
+        }
+
+        /// <summary>
+        /// Gets the contributors to a specific category
+        /// </summary>
+        /// <param name="categoryId">The ID of the category</param>
+        /// <returns>The contributors for this category</returns>
         public static async Task<Contributors> GetCategoryContributors(int categoryId)
         {
             string url = baseUrl + "categories/" + categoryId.ToString() + "/contributors";
@@ -901,6 +944,14 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// Returns the users which are following a category
+        /// The list of users is divided into pages and the method will only return an array of the users on the specified page.
+        /// </summary>
+        /// <param name="categoryId">The ID of the category</param>
+        /// <param name="page">The page number: Specifies which chunk of the list should be returned</param>
+        /// <param name="per_page">Specifies how many entries are on one page</param>
+        /// <returns>A list of followers on the specified page</returns>
         public static async Task<User[]> GetCategoryFollowers(int categoryId, int page = 0, int per_page = 10)
         {
             string url = baseUrl + "categories/" + categoryId.ToString() + "/followers";
@@ -920,6 +971,42 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
+        /// <summary>
+        /// Makes the currently logged in user follow the specified category
+        /// </summary>
+        /// <param name="categoryId">The id of the category to follow</param>
+        /// <returns>The category with the specified ID</returns>
+        public static async Task<Category> FollowCategory(int categoryId)
+        {
+            string url = baseUrl + "categories/" + categoryId.ToString() + "/followers";
+
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Response response = await Rest.PostAsync(url, headers);
+
+            if (!response.Successful)
+            {
+                Debug.LogError(response.ResponseCode + ": " + response.ResponseBody);
+                return null;
+            }
+            else
+            {
+                Category category = JsonUtility.FromJson<Category>(response.ResponseBody);
+                return category;
+            }
+        }
+
+        /// <summary>
+        /// Gets the requirements in a category
+        /// This method is able to sort and filter the requirements.
+        /// </summary>
+        /// <param name="categoryId">The ID to the category</param>
+        /// <param name="page">Specifies the page number of the list chunks</param>
+        /// <param name="per_page">Specifies how many entries should be on one page</param>
+        /// <param name="search">Search expression for filtering requirements</param>
+        /// <param name="filterState">Filters the requirements by their done-state</param>
+        /// <param name="sortMode">Specifies how the requirements should be sorted</param>
+        /// <returns>An array of requirements which match the filter(s) and which are on the specified page</returns>
         public static async Task<Requirement[]> GetCategoryRequirements
             (int categoryId, int page = 0, int per_page = 10, string search = "",
             RequirementState filterState = RequirementState.ALL, RequirementsSortingMode sortMode = RequirementsSortingMode.DEFAULT)
@@ -956,19 +1043,38 @@ namespace Org.Requirements_Bazaar.API
             }
         }
 
-        public static async Task<Statistics> GetCategoryStatistics(int requirementId)
+        /// <summary>
+        /// Gets the statistics of a category
+        /// </summary>
+        /// <param name="categoryId">The ID of the category</param>
+        /// <returns>Statistics about the specified category</returns>
+        public static async Task<Statistics> GetCategoryStatistics(int categoryId)
         {
-            return await GetCategoryStatistics(requirementId, false, DateTime.Now);
+            return await GetCategoryStatistics(categoryId, false, DateTime.Now);
         }
 
-        public static async Task<Statistics> GetCategoryStatistics(int requirementId, DateTime since)
+        /// <summary>
+        /// Gets the statistics of a category since some date
+        /// </summary>
+        /// <param name="categoryId">The ID of the category</param>
+        /// <param name="since">Time from which point onwards, statistics should be counted</param>
+        /// <returns>Statistics from the given point in time until now</returns>
+        public static async Task<Statistics> GetCategoryStatistics(int categoryId, DateTime since)
         {
-            return await GetCategoryStatistics(requirementId, true, since);
+            return await GetCategoryStatistics(categoryId, true, since);
         }
 
-        private static async Task<Statistics> GetCategoryStatistics(int requirementId, bool useSince, DateTime since)
+        /// <summary>
+        /// Gets the statistics of a category
+        /// Internal method which allows to specify whether or not a "since"-date should be used
+        /// </summary>
+        /// <param name="categoryId">The ID of the category</param>
+        /// <param name="useSince">If set to true, since will be considered, else all-time statistics will be counted</param>
+        /// <param name="since">Time from which point onwards, statistics should be counted</param>
+        /// <returns>The statistics of the category</returns>
+        private static async Task<Statistics> GetCategoryStatistics(int categoryId, bool useSince, DateTime since)
         {
-            string url = baseUrl + "categories/" + requirementId.ToString() + "/statistics";
+            string url = baseUrl + "categories/" + categoryId.ToString() + "/statistics";
 
             if (useSince)
             {

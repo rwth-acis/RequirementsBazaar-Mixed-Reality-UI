@@ -35,8 +35,8 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
 
         private void UpdateDisplay()
         {
-            titleLabel.text = category.name;
-            descriptionLabel.text = category.description;
+            titleLabel.text = category.Name;
+            descriptionLabel.text = category.Description;
         }
 
         public void OnClick()
@@ -45,7 +45,7 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
             GameObject requirementsPage = Instantiate(RequirementsBazaarUI.Instance.RequirementsPage);
             requirementsPage.transform.position = canvas.position;
             RequirementsBazaarRequirementsInCategoryForm requirementsForm = requirementsPage.GetComponent<RequirementsBazaarRequirementsInCategoryForm>();
-            requirementsForm.CategoryId = Category.id;
+            requirementsForm.CategoryId = Category.Id;
             requirementsForm.PageClosed += OnInstantiatedPageClosed;
 
             canvas.gameObject.SetActive(false);

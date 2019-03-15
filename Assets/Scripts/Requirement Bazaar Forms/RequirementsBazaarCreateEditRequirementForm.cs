@@ -101,7 +101,7 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
             {
                 for (int i = 0; i < availableCategories.Length; i++)
                 {
-                    if (availableCategories[i].name == requirement.Categories[0].name)
+                    if (availableCategories[i].Name == requirement.Categories[0].Name)
                     {
                         categoryDropdown.value = i;
                         categoryDropdown.RefreshShownValue();
@@ -121,7 +121,7 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
             categoryDropdown.options = new List<Dropdown.OptionData>();
             for (int i = 0; i < availableCategories.Length; i++)
             {
-                categoryDropdown.options.Add(new Dropdown.OptionData(availableCategories[i].name));
+                categoryDropdown.options.Add(new Dropdown.OptionData(availableCategories[i].Name));
             }
             categoryDropdown.RefreshShownValue();
         }
