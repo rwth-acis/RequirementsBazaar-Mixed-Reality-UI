@@ -16,8 +16,6 @@ namespace Org.Requirements_Bazaar.Common
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Debug.Log("Posting");
-
-                Category cat = await RequirementsBazaar.FollowCategory(753);
             }
         }
     }
