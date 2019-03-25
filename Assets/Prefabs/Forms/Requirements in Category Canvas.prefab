@@ -444,7 +444,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 54bfa03e64ed24f47a240289614d58e9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 318edd8623914e94e8b9853bc54ff835, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1185,6 +1185,9 @@ MonoBehaviour:
   titleLabel: {fileID: 114716894471716246}
   descriptionLabel: {fileID: 114398684251175506}
   votesLabel: {fileID: 114791943633850744}
+  voteImage: {fileID: 114023223805483514}
+  notVotedSprite: {fileID: 21300000, guid: 321fbd53bb559c34f8068f6539a720f3, type: 3}
+  votedSprite: {fileID: 21300000, guid: 318edd8623914e94e8b9853bc54ff835, type: 3}
 --- !u!114 &114909978641556952
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1331,7 +1334,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114023223805483514}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114847221750622890}
+        m_MethodName: OnVoteClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!222 &222026424332120628
