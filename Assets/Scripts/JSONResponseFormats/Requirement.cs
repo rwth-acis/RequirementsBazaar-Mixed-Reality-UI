@@ -183,11 +183,27 @@ namespace Org.Requirements_Bazaar.DataModel
         /// <summary>
         /// True if the currently logged in user has voted for this requirement
         /// </summary>
-        public string UserVoted
+        public UserVoted UserVoted
         {
             get
             {
-                return userVoted;
+                if (userVoted == "UP_VOTE")
+                {
+                    return UserVoted.UP_VOTE;
+                }
+                else if (userVoted == "DOWN_VOTE")
+                {
+                    return UserVoted.DOWN_VOTE;
+                }
+                else if (userVoted == "NO_VOTE")
+                {
+                    return UserVoted.NO_VOTE;
+                }
+                else
+                {
+                    Debug.LogWarning("unrecognized user voted format");
+                    return UserVoted.NO_VOTE;
+                }
             }
         }
 
@@ -203,6 +219,11 @@ namespace Org.Requirements_Bazaar.DataModel
             UploadableRequirement req = new UploadableRequirement(id, name, description, projectId, categories);
             return req;
         }
+    }
+
+    public enum UserVoted
+    {
+        NO_VOTE, UP_VOTE, DOWN_VOTE
     }
 
 }

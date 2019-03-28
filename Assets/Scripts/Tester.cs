@@ -15,6 +15,11 @@ namespace Org.Requirements_Bazaar.Common
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                Requirement[] reqs = await RequirementsBazaar.GetCategoryRequirements(751);
+                foreach(Requirement req in reqs)
+                {
+                    Debug.Log(req.Name + "; " + req.UserVoted);
+                }
                 Debug.Log("Posting");
             }
         }

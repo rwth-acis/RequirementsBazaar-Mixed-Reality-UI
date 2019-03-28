@@ -41,17 +41,20 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
 
         private void UpdateDisplay()
         {
+            Debug.Log("Updated display for req " + Requirement.Name);
             titleLabel.text = requirement.Name;
             descriptionLabel.text = requirement.Description;
             votesLabel.text = requirement.UpVotes.ToString();
-            //if (requirement.UserVoted)
-            //{
-            //    voteImage.sprite = votedSprite;
-            //}
-            //else
-            //{
-            //    voteImage.sprite = notVotedSprite;
-            //}
+            if (requirement.UserVoted == UserVoted.UP_VOTE)
+            {
+                voteImage.sprite = votedSprite;
+            }
+            // could include a case for voting down here
+            // for now, no vote and voting down are both displayed with the notVotedSprite
+            else
+            {
+                voteImage.sprite = notVotedSprite;
+            }
         }
 
         public void OnClick()
@@ -69,14 +72,14 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
         public async void OnVoteClick()
         {
             voteButton.interactable = false;
-            //if (requirement.UserVoted) // if user already voted => undo by voting down
-            //{
-            //    Requirement = await RequirementsBazaar.VoteForRequirement(Requirement.Id, VotingDirection.DOWN);
-            //}
-            //else // if user did not yet vote => vote up
-            //{
-            //    Requirement = await RequirementsBazaar.VoteForRequirement(Requirement.Id);
-            //}
+            if (requirement.UserVoted != UserVoted.NO_VOTE) // if user already voted => undo by voting down
+            {
+                // delete vote
+            }
+            else // if user did not yet vote => vote up; this is the standard case; no voting down possible with this UI
+            {
+                Requirement = await RequirementsBazaar.VoteForRequirement(Requirement.Id);
+            }
             voteButton.interactable = true;
         }
 

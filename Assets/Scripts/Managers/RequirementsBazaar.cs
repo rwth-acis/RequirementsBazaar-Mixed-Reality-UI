@@ -1029,7 +1029,9 @@ namespace Org.Requirements_Bazaar.API
                 url += "&sort=" + sortMode.ToString().ToLower();
             }
 
-            Response response = await Rest.GetAsync(url);
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Response response = await Rest.GetAsync(url, headers);
             if (!response.Successful)
             {
                 Debug.LogError(response.ResponseBody);
