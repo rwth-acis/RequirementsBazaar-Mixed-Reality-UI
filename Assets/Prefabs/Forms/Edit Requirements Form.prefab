@@ -1605,7 +1605,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114605462488788770}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114674554476679238}
+        m_MethodName: PostRequirement
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114578544485085628
@@ -1915,7 +1926,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectId: 376
-  requirementId: 1800
+  requirementId: -1
   submitButton: {fileID: 114575336682689220}
   categoryDropdown: {fileID: 114689293224677230}
   titleInputField: {fileID: 114681637560892428}

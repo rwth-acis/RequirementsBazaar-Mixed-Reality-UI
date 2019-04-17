@@ -367,34 +367,23 @@ namespace Org.Requirements_Bazaar.API
         /// <param name="projectId">The id of the project where the requirement will be posted</param>
         /// <param name="name">The name/title of the requirement</param>
         /// <param name="description">The description of the requirement</param>
-        /// <param name="categoryIds">An array of category ids in which the requirements will be put</param>
-        /// <returns></returns>
-        public static async Task<Requirement> CreateRequirement(int projectId, string name, string description, int[] categoryIds = null)
+        /// <param name="categories">Categories in the project</param>
+        /// <returns>The resulting requirement as it was saved on the server</returns>
+        public static async Task<Requirement> CreateRequirement(int projectId, string name, string description, Category[] categories = null)
         {
             string url = baseUrl + "requirements/";
 
             Dictionary<string, string> headers = Utilities.GetStandardHeaders();
 
-            Category[] cats = null;
-
-            // check if categories were supplied; if yes: fetch their data
-            if (categoryIds != null)
-            {
-                // convert the supplied category ids to actual category data
-                cats = new Category[categoryIds.Length];
-                for (int i = 0; i < categoryIds.Length; i++)
-                {
-                    cats[i] = await GetCategory(categoryIds[i]);
-                }
-            }
-            else // if no category was supplied: look for the default category and put it in there
+            // check if categories were supplied; if no: look for the default category and it in there
+            if (categories == null)
             {
                 Project proj = await GetProject(projectId);
-                cats = new Category[1];
-                cats[0] = await GetCategory(proj.DefaultCategoryId);
+                categories = new Category[1];
+                categories[0] = await GetCategory(proj.DefaultCategoryId);
             }
 
-            UploadableRequirement toCreate = new UploadableRequirement(name, description, projectId, cats);
+            UploadableRequirement toCreate = new UploadableRequirement(name, description, projectId, categories);
 
             string json = JsonUtility.ToJson(toCreate);
 
@@ -409,6 +398,27 @@ namespace Org.Requirements_Bazaar.API
                 Requirement requirement = JsonUtility.FromJson<Requirement>(response.ResponseBody);
                 return requirement;
             }
+        }
+
+        /// <summary>
+        /// Creates and posts a new requirement
+        /// </summary>
+        /// <param name="projectId">The id of the project where the requirement will be posted</param>
+        /// <param name="name">The name/title of the requirement</param>
+        /// <param name="description">The description of the requirement</param>
+        /// <param name="categoryIds">An array of category ids in which the requirements will be put</param>
+        /// <returns>The resulting requirement as it was saved on the server</returns>
+        public static async Task<Requirement> CreateRequirement(int projectId, string name, string description, int[] categoryIds)
+        {
+
+            // convert the supplied category ids to actual category data
+            Category[] cats = new Category[categoryIds.Length];
+            for (int i = 0; i < categoryIds.Length; i++)
+            {
+                cats[i] = await GetCategory(categoryIds[i]);
+            }
+
+            return await CreateRequirement(projectId, name, description, cats);
         }
 
         /// <summary>
@@ -759,6 +769,31 @@ namespace Org.Requirements_Bazaar.API
             Dictionary<string, string> headers = Utilities.GetStandardHeaders();
 
             Response response = await Rest.PostAsync(url, headers);
+
+            if (!response.Successful)
+            {
+                Debug.LogError(response.ResponseCode + ": " + response.ResponseBody);
+                return null;
+            }
+            else
+            {
+                Requirement resRequirement = JsonUtility.FromJson<Requirement>(response.ResponseBody);
+                return resRequirement;
+            }
+        }
+
+        /// <summary>
+        /// Deletes/undoes the vote of the currently logged in user one a specified requirement
+        /// </summary>
+        /// <param name="requirementId">The requirement where the vote should be undone</param>
+        /// <returns>The updated requirement</returns>
+        public static async Task<Requirement> UndoVote(int requirementId)
+        {
+            string url = baseUrl + "requirements/" + requirementId.ToString() + "/votes";
+
+            Dictionary<string, string> headers = Utilities.GetStandardHeaders();
+
+            Response response = await Rest.DeleteAsync(url, headers);
 
             if (!response.Successful)
             {

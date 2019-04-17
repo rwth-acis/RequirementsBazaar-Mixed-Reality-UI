@@ -125,20 +125,27 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
             categoryDropdown.RefreshShownValue();
         }
 
-        public void PostRequirement()
+        public async void PostRequirement()
         {
             if (IsNewRequirement)
             {
                 requirement = new Requirement();
-                requirement.Name = titleInputField.text;
-                requirement.Description = descriptionInputField.text;
-                requirement.ProjectId = projectId;
-                requirement.Categories = new Category[] { availableCategories[categoryDropdown.value]};
+            }
+            requirement.Name = titleInputField.text;
+            requirement.Description = descriptionInputField.text;
+            requirement.ProjectId = projectId;
+            requirement.Categories = new Category[] { availableCategories[categoryDropdown.value] };
+
+            if (IsNewRequirement)
+            {
+                await RequirementsBazaar.CreateRequirement(requirement.ProjectId, requirement.Name, requirement.Description, requirement.Categories);
             }
             else
             {
-
+                await RequirementsBazaar.UpdateRequirement(requirement);
             }
+
+            Close();
         }
     }
 }

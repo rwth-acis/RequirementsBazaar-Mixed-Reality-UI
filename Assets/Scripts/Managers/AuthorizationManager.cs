@@ -39,8 +39,9 @@ namespace Org.Requirements_Bazaar.Managers
             AccessTokenChanged?.Invoke(this, args);
         }
 
-        private void Start()
+        protected override void Awake()
         {
+            base.Awake();
             // skip the login by using the debug token
             if (Application.isEditor)
             {

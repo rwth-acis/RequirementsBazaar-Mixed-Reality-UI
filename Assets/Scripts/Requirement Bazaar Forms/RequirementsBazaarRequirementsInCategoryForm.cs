@@ -91,7 +91,6 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
 
         private void CreateRequirementsDisplayElement(Requirement requirement)
         {
-            Debug.Log("Creating element for " + requirement.Name + "; " + requirement.UserVoted);
             RectTransform requirementDisplayTransform = Instantiate(requirementDisplayElementTemplate, requirementDisplayElementTemplate.parent);
             requirementDisplayTransform.name = "Requirement (ID " + requirement.Id + ")";
             requirementDisplayTransform.gameObject.SetActive(true);

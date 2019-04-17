@@ -41,11 +41,19 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
 
         private void UpdateDisplay()
         {
-            Debug.Log("Updated display for req " + Requirement.Name);
             titleLabel.text = requirement.Name;
             descriptionLabel.text = requirement.Description;
             votesLabel.text = requirement.UpVotes.ToString();
-            if (requirement.UserVoted == UserVoted.UP_VOTE)
+            SetVoteIcon(requirement.UserVoted == UserVoted.UP_VOTE);
+        }
+
+        /// <summary>
+        /// Updates the vote icon based on the fact whether the user has voted up
+        /// </summary>
+        /// <param name="userVoted">True if the user has voted on this requirement</param>
+        private void SetVoteIcon(bool userVotedUp)
+        {
+            if (userVotedUp)
             {
                 voteImage.sprite = votedSprite;
             }
@@ -74,10 +82,13 @@ namespace Org.Requirements_Bazaar.AR_VR_Forms
             voteButton.interactable = false;
             if (requirement.UserVoted != UserVoted.NO_VOTE) // if user already voted => undo by voting down
             {
+                SetVoteIcon(false);
                 // delete vote
+                Requirement = await RequirementsBazaar.UndoVote(Requirement.Id);
             }
             else // if user did not yet vote => vote up; this is the standard case; no voting down possible with this UI
             {
+                SetVoteIcon(true);
                 Requirement = await RequirementsBazaar.VoteForRequirement(Requirement.Id);
             }
             voteButton.interactable = true;
